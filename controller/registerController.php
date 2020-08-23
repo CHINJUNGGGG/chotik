@@ -1,9 +1,11 @@
 <?php 
-include('../db/connect.php'); 
+session_start();
+include('../db/connect.php');
+include('../db/connectpdo.php'); 
 
 $prefixname = $_POST['prefixname'];
 $firstname = $_POST['firstname'];
-$lastname = $_POST['prefixname'];
+$lastname = $_POST['lastname'];
 $tel = $_POST['tel'];
 $username = $_POST['username'];
 $password = $_POST['password'];
@@ -35,12 +37,35 @@ if(isset($_POST["do"]) && $_POST["do"] != "" ){
 
         case 'login':
 
-            $sql_check = "SELECT username FROM tbl_users WHERE username = '".$username."'";
-            $result_check = mysqli_query($conn, $sql_check) or die(mysqli_error());
-            $num=mysqli_num_rows($result_check);
-  
+            $member_username = $_POST['username'];
+            $member_password = $_POST['password'];
 
-            echo "Success";
+                if(isset($_POST['username']) && $_POST['username'] != '' && isset($_POST['password']) && $_POST['password'] != '') {
+                    $member_username = trim($_POST['username']);
+                    $member_password = trim($_POST['password']);
+
+                    $query = "SELECT * FROM tbl_users WHERE `username` = ? LIMIT 0,1";
+                    $stmt = $db->prepare($query);
+                    $stmt->bindParam(1, $username);
+                    $stmt->execute();
+                    $num=$stmt->rowCount();
+
+                    if($num > 0) {
+                        // echo($num);
+                        // die();
+                        $row=$stmt->fetch(PDO::FETCH_ASSOC);
+                        $_SESSION['id'] = $row['id'];
+                        $_SESSION['firstname'] = $row['firstname'];
+                        $_SESSION['lastname'] = $row['lastname'];
+                        $MEMBER_PASSWORD_HASH = $row['password'];
+                      
+                        if(password_verify($member_password,$MEMBER_PASSWORD_HASH)){
+                            echo "Success";
+                        }else{
+                            echo "Error";
+                        }
+                    }
+                }   
 
         break;
 

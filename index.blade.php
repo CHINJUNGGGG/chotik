@@ -1,3 +1,6 @@
+<?php 
+session_start();
+?>
 <!doctype html>
 <html lang="en">
 
@@ -8,9 +11,8 @@
 
 
 
-    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle">เข้าสู่ระบบ</h5>
@@ -18,18 +20,27 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+                <form action="controller/registerController.php" id="login_form" method="POST" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="username">ชื่อผู้ใช้งาน</label>
+                            <input type="text" class="form-control" name="username" id="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">รหัสผ่าน</label>
+                            <input type="password" class="form-control" name="password" id="password" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิดหน้าต่าง</button>
+                        <button type="submit" name="submit" id="submit" class="btn btn-primary">เข้าสู่ระบบ</button>
+                        <input type="hidden" name="do" value="login">
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    <div class="modal fade" id="regisModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
+    <div class="modal fade" id="regisModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -112,7 +123,40 @@
             });
         }));
     });
-    </script>
+</script>
+<script type="text/javascript">
+    $(document).ready(function(e) {
+        $("#login_form").on('submit', (function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "controller/registerController.php",
+                type: "POST",
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response)
+                    if (response == "Error") {
+                        swal("ชื่อผู้ใช้งานหรือรหัสผ่านผิด !!", {
+                            icon: "warning",
+                        });
+                    }
+                    if (response == "Success") {
+                        swal("Success", {
+                            icon: "success",
+                        });
+
+                        setTimeout(function() {
+                            window.location.href = "index.blade.php";
+                        }, 3000);
+                    }
+                },
+                error: function() {}
+            });
+        }));
+    });
+</script>
 </body>
 
 </html>
