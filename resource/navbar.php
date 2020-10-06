@@ -1,39 +1,47 @@
-<?php session_start(); ?>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light" style="height: 100px !important;">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
-        aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <img class="mt-2" src="assets/img/logo.png" style="width:270px !important; height:150px !important;">
-
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">หน้าหลัก</a>
-            </li>
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
-            </li> -->
-        </ul>
-        <ul class="navbar-nav ml-auto" style="margin-right: 40px !important;">
-            <?php if (isset($_SESSION['id'])) { ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><?php echo $_SESSION['firstname']; ?> <?php echo $_SESSION['lastname']; ?></a>
-                </li>
-            <?php
-            }else{
-                echo'<li class="nav-item">
-                        <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">เข้าสู่ระบบ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" data-toggle="modal" data-target="#regisModal">สมัครสมาชิก</a>
-                    </li>';
-            }        
-        ?>
-        </ul>
-    </div>
-</nav>
+    <header class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="header__logo">
+                        <a href="index.blade.php"></a>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <nav class="header__menu">
+                        <ul>
+                            <li class="active"><a href="index.blade.php">Home</a></li>
+                            <li><a href="promotion.blade.php">Promotion</a></li>
+                            <li><a href="portfolio.blade.php">Portfolio</a></li>
+                            <li><a href="contact.blade.php">Contact</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-5 d-flex justify-content-end">
+                <?php if (isset($_SESSION['id'])) { ?>
+                    <nav class="header__menu">
+                        <ul>
+                            <li><a href="#"><?php echo $_SESSION['firstname']; ?> <?php echo $_SESSION['lastname']; ?></a>
+                                <ul class="dropdown">
+                                    <li><a href="profile.blade.php">Profile</a></li>
+                                    <li><a href="logout.blade.php">Logout</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                <?php }else{ ?>
+                    <div class="header__right">
+                        <div class="header__right__btn">
+                            <a href="#" class="primary-btn" data-toggle="modal" data-target="#loginModal">Login</a>
+                        </div>
+                        <div class="header__right__btn">
+                            <a href="#" class="primary-btn" data-toggle="modal" data-target="#regisModal" style="background-color: #282828;">Register</a>
+                        </div>
+                    </div>
+                <?php } ?>    
+                </div>
+            </div>
+            <div class="canvas__open">
+                <span class="fa fa-bars"></span>
+            </div>
+        </div>
+    </header>
