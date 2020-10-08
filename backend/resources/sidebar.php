@@ -33,7 +33,10 @@ $provider = $_SESSION['provider'];
                                         <a href="promotion.blade.php"><i class="fa fa-heart"></i><span>Promotion</span></a>
                                     </li>
                                     <li class="">
-                                        <a href="detail.shop.blade.php"><i class="fa fa-file-o"></i><span>Detail shop</span></a>
+                                        <a href="portfolio.blade.php"><i class="fa fa-picture-o"></i><span>Portfolio</span></a>
+                                    </li>
+                                    <li class="">
+                                        <a href="admin.blade.php"><i class="fa fa-file-o"></i><span>Admin Management</span></a>
                                     </li>
                                     <li class="">
                                         <a href="logout.blade.php"><i class="ti-dashboard"></i><span>Logout</span></a>

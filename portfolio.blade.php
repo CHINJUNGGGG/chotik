@@ -16,106 +16,54 @@ require_once __DIR__.'/db/connectpdo.php';
 
     <?php require_once __DIR__.'/resource/navbar.php'; ?>
 
-    <section class="hero set-bg" data-setbg="assets/img1/5.jpg" style="opacity: 1">
+    <section class="blog spad" style="margin-top: 100px;">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="hero__text">
-                        <h2>chotik nails & spa</h2>
-                        <a href="#" class="primary-btn">Contact us</a>
-                        <a href="promotion.blade.php" class="primary-btn second-bg">See Promotion</a>
+                <div class="col-lg-12">
+                    <div class="section-title center-title">
+                        <h2>Latest Review</h2>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
- 
-    <!-- <section class="feature spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-4">
-                    <div class="feature__text">
-                        <div class="section-title">
-                            <span>Why choose us ?</span>
-                            <h2>Our Promotion</h2>
-                        </div>
-                        <p>Promotion for you.</p>
-                        <a href="promotion.blade.php" class="primary-btn second-bg">See Promotion</a>
-                    </div>
-                </div>
-                <div class="col-lg-8 col-md-8">
-                    <div class="row">
-                    <?php
-                        $sql1 = "SELECT * FROM tbl_promotion ORDER BY id DESC LIMIT 6";
-                        $stmt=$db->prepare($sql1);
-                        $stmt->execute();
-                        while($row1=$stmt->fetch(PDO::FETCH_ASSOC)){
-                            $id = $row1['id'];
-                            $pro_name = $row1['pro_name'];
-                            $pro_price = $row1['pro_price'];
-                            $pro_img = $row1['pro_img'];
-                    ?>
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="feature__item">
-                                <img src="backend/img/promotion/<?=$pro_img?>" alt="" style="width: 150px; height 100px;">
-                                <h5><?=$pro_name?></h5>
-                            </div>
-                        </div>
-                    <?php } ?>    
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
+            <div class="row mt-4" style="margin-top: 200px;">
+                            <?php
+                                $sql = "SELECT * FROM tbl_portfolio";
+                                $stmt=$db->prepare($sql);
+                                $stmt->execute();
+                                while($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                                    $id = $row['id'];
+                                    $picture = $row['picture'];
+                                    $detail = $row['detail'];
+                                    $user_id = $row['user_id'];
 
-    <section class="team spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-7 col-md-7 col-sm-7">
-                    <div class="section-title">
-                        <span>Our Great Team</span>
-                        <h2>Our Technician</h2>
-                    </div>
-                </div>
-                <div class="col-lg-5 col-md-5 col-sm-5">
-                    <div class="team__all">
-                        <a href="technician.blade.php" class="primary-btn second-bg">View all</a>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <?php
-                    $sql = "SELECT * FROM tbl_tech ORDER BY id DESC";
-                    $stmt=$db->prepare($sql);
-                    $stmt->execute();
-                    while($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                        $firstname = $row['firstname'];
-                        $lastname = $row['lastname'];
-                        $expert = $row['expert'];
-                        $tel = $row['tel'];
-                        $picture = $row['picture'];
-                ?>
-                <div class="col-lg-6">
-                    <div class="team__item">
-                        <div class="team__item__img">
-                            <img src="backend/img/tech/<?=$picture?>" alt="" style="width: 190px; height: 150px;">
+                                    $sql2 = "SELECT * FROM tbl_users WHERE id = :user_id";
+                                    $stmt=$db->prepare($sql2);
+                                    $stmt->bindparam(':user_id', $user_id);
+                                    $stmt->execute();
+                                    $row2=$stmt->fetch(PDO::FETCH_ASSOC);
+                                        $firstname = $row2['firstname'];
+                                        $lastname = $row2['lastname'];
+                            ?>
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <div class="blog__item">
+                        <div class="blog__item__pic">
+                            <img src="backend/img/port/<?=$picture?>" alt="">
                         </div>
-                        <div class="team__item__text">
-                            <h5><?=$firstname?> <?=$lastname?></h5>
-                            <span>Tel.<?=$tel?></span>
-                            <div class="team__item__social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
-                                <a href="#"><i class="fa fa-dribbble"></i></a>
-                            </div>
+                        <div class="blog__item__text">
+                            <ul>
+                                <li>By <?=$firstname?> <?=$lastname?></li>
+                            </ul>
+                            <p><?=$detail?></p>
                         </div>
                     </div>
                 </div>
-                <?php } ?> 
+                            <?php } ?>
             </div>
         </div>
     </section>
+
+    
+
 
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">

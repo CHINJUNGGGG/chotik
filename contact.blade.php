@@ -16,106 +16,45 @@ require_once __DIR__.'/db/connectpdo.php';
 
     <?php require_once __DIR__.'/resource/navbar.php'; ?>
 
-    <section class="hero set-bg" data-setbg="assets/img1/5.jpg" style="opacity: 1">
+    <section class="contact spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="hero__text">
-                        <h2>chotik nails & spa</h2>
-                        <a href="#" class="primary-btn">Contact us</a>
-                        <a href="promotion.blade.php" class="primary-btn second-bg">See Promotion</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
- 
-    <!-- <section class="feature spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-4">
-                    <div class="feature__text">
-                        <div class="section-title">
-                            <span>Why choose us ?</span>
-                            <h2>Our Promotion</h2>
-                        </div>
-                        <p>Promotion for you.</p>
-                        <a href="promotion.blade.php" class="primary-btn second-bg">See Promotion</a>
+                <div class="col-lg-4 col-md-4" style="margin-top: 100px;">
+                    <div class="contact__address">
+                        <h4>ข้อมูลติดต่อร้าน</h4>
+                        <ul>
+                            <li>
+                                <div class="icon">
+                                    <i class="fa fa-phone"></i>
+                                </div>
+                                <p><span>chotik_nails@gmail.com</span><span>099-954-4323</span></p>
+                            </li>
+                            <li>
+                                <div class="icon">
+                                    <i class="fa fa-map-marker"></i>
+                                </div>
+                                <p>111/43 ซอย พรธิสาร ตำบล คลองหก อำเภอ คลองหลวง จังหวัก ปทุมธานี 12120</p>
+                            </li>
+                            <li>
+                                <div class="icon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <p><span style="margin-top: 10px;">จันทร์ - เสาร์ : 8:00 - 17:00 </span></p>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="col-lg-8 col-md-8">
-                    <div class="row">
-                    <?php
-                        $sql1 = "SELECT * FROM tbl_promotion ORDER BY id DESC LIMIT 6";
-                        $stmt=$db->prepare($sql1);
-                        $stmt->execute();
-                        while($row1=$stmt->fetch(PDO::FETCH_ASSOC)){
-                            $id = $row1['id'];
-                            $pro_name = $row1['pro_name'];
-                            $pro_price = $row1['pro_price'];
-                            $pro_img = $row1['pro_img'];
-                    ?>
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="feature__item">
-                                <img src="backend/img/promotion/<?=$pro_img?>" alt="" style="width: 150px; height 100px;">
-                                <h5><?=$pro_name?></h5>
-                            </div>
-                        </div>
-                    <?php } ?>    
+                    <div class="map">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9141.07297257301!2d100.72242326004336!3d14.033968899936912!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d78a34e9c15a9%3A0xe09b721885a0b41b!2z4LihIOC4o-C4suC4iuC4oeC4h-C4hOC4peC4mOC4seC4jeC4jeC4muC4uOC4o-C4tQ!5e0!3m2!1sth!2sth!4v1602153816015!5m2!1sth!2sth" width="600" height="400" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section> -->
-
-    <section class="team spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-7 col-md-7 col-sm-7">
-                    <div class="section-title">
-                        <span>Our Great Team</span>
-                        <h2>Our Technician</h2>
-                    </div>
-                </div>
-                <div class="col-lg-5 col-md-5 col-sm-5">
-                    <div class="team__all">
-                        <a href="technician.blade.php" class="primary-btn second-bg">View all</a>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <?php
-                    $sql = "SELECT * FROM tbl_tech ORDER BY id DESC";
-                    $stmt=$db->prepare($sql);
-                    $stmt->execute();
-                    while($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                        $firstname = $row['firstname'];
-                        $lastname = $row['lastname'];
-                        $expert = $row['expert'];
-                        $tel = $row['tel'];
-                        $picture = $row['picture'];
-                ?>
-                <div class="col-lg-6">
-                    <div class="team__item">
-                        <div class="team__item__img">
-                            <img src="backend/img/tech/<?=$picture?>" alt="" style="width: 190px; height: 150px;">
-                        </div>
-                        <div class="team__item__text">
-                            <h5><?=$firstname?> <?=$lastname?></h5>
-                            <span>Tel.<?=$tel?></span>
-                            <div class="team__item__social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
-                                <a href="#"><i class="fa fa-dribbble"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <?php } ?> 
             </div>
         </div>
     </section>
+
+    
+
 
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">

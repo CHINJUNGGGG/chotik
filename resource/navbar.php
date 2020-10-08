@@ -1,4 +1,4 @@
-    <header class="header">
+    <header class="header" style="height: 90px;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-2">
@@ -6,17 +6,18 @@
                         <a href="index.blade.php"></a>
                     </div>
                 </div>
-                <div class="col-lg-5">
+                <div class="col-lg-7">
                     <nav class="header__menu">
                         <ul>
                             <li class="active"><a href="index.blade.php">Home</a></li>
+                            <li><a href="booking.blade.php">Booking</a></li>
                             <li><a href="promotion.blade.php">Promotion</a></li>
                             <li><a href="portfolio.blade.php">Portfolio</a></li>
                             <li><a href="contact.blade.php">Contact</a></li>
                         </ul>
                     </nav>
                 </div>
-                <div class="col-lg-5 d-flex justify-content-end">
+                <div class="col-lg-3 d-flex justify-content-end">
                 <?php if (isset($_SESSION['id'])) { ?>
                     <nav class="header__menu">
                         <ul>

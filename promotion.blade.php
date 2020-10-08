@@ -16,106 +16,145 @@ require_once __DIR__.'/db/connectpdo.php';
 
     <?php require_once __DIR__.'/resource/navbar.php'; ?>
 
-    <section class="hero set-bg" data-setbg="assets/img1/5.jpg" style="opacity: 1">
+    <section class="application-form courses--page spad" style="margin-top: 100px;">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="hero__text">
-                        <h2>chotik nails & spa</h2>
-                        <a href="#" class="primary-btn">Contact us</a>
-                        <a href="promotion.blade.php" class="primary-btn second-bg">See Promotion</a>
+            <div class="application__form__content">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-title center-title">
+                            <h2>BOOKING</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <?php if (isset($_SESSION['id'])) { ?>
+                        <button type="button" class="site-btn second-bg" data-toggle="modal"
+                            data-target="#buyModal">BOOKING NOW</button>
+                        <?php }else{ ?>
+                        <button type="button" class="site-btn second-bg" data-toggle="modal"
+                            data-target="#loginModal">BOOKING NOW</button>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
         </div>
     </section>
- 
-    <!-- <section class="feature spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-4">
-                    <div class="feature__text">
-                        <div class="section-title">
-                            <span>Why choose us ?</span>
-                            <h2>Our Promotion</h2>
-                        </div>
-                        <p>Promotion for you.</p>
-                        <a href="promotion.blade.php" class="primary-btn second-bg">See Promotion</a>
-                    </div>
-                </div>
-                <div class="col-lg-8 col-md-8">
-                    <div class="row">
-                    <?php
-                        $sql1 = "SELECT * FROM tbl_promotion ORDER BY id DESC LIMIT 6";
-                        $stmt=$db->prepare($sql1);
-                        $stmt->execute();
-                        while($row1=$stmt->fetch(PDO::FETCH_ASSOC)){
-                            $id = $row1['id'];
-                            $pro_name = $row1['pro_name'];
-                            $pro_price = $row1['pro_price'];
-                            $pro_img = $row1['pro_img'];
-                    ?>
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="feature__item">
-                                <img src="backend/img/promotion/<?=$pro_img?>" alt="" style="width: 150px; height 100px;">
-                                <h5><?=$pro_name?></h5>
-                            </div>
-                        </div>
-                    <?php } ?>    
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
 
-    <section class="team spad">
+    <section class="courses spad">
         <div class="container">
             <div class="row">
                 <div class="col-lg-7 col-md-7 col-sm-7">
                     <div class="section-title">
-                        <span>Our Great Team</span>
-                        <h2>Our Technician</h2>
+                        <h2>Our Promotion</h2>
                     </div>
                 </div>
                 <div class="col-lg-5 col-md-5 col-sm-5">
-                    <div class="team__all">
-                        <a href="technician.blade.php" class="primary-btn second-bg">View all</a>
+                    <div class="courses__all">
+                        
                     </div>
                 </div>
             </div>
             <div class="row">
                 <?php
-                    $sql = "SELECT * FROM tbl_tech ORDER BY id DESC";
+                    $sql = "SELECT * FROM tbl_promotion ORDER BY id DESC";
                     $stmt=$db->prepare($sql);
                     $stmt->execute();
                     while($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                        $firstname = $row['firstname'];
-                        $lastname = $row['lastname'];
-                        $expert = $row['expert'];
-                        $tel = $row['tel'];
-                        $picture = $row['picture'];
+                        $id = $row['id'];
+                        $pro_name = $row['pro_name'];
+                        $pro_price = $row['pro_price'];
+                        $pro_img = $row['pro_img'];
+                        $pro_detail = $row['pro_detail'];
                 ?>
-                <div class="col-lg-6">
-                    <div class="team__item">
-                        <div class="team__item__img">
-                            <img src="backend/img/tech/<?=$picture?>" alt="" style="width: 190px; height: 150px;">
-                        </div>
-                        <div class="team__item__text">
-                            <h5><?=$firstname?> <?=$lastname?></h5>
-                            <span>Tel.<?=$tel?></span>
-                            <div class="team__item__social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
-                                <a href="#"><i class="fa fa-dribbble"></i></a>
-                            </div>
-                        </div>
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <div class="course__item">
+                        <img src="backend/img/promotion/<?=$pro_img?>" alt="">
+                        <h5><?=$pro_name?></h5>
+                        <h4>฿ <?=$pro_price?></h4>
+                        <p><?=$pro_detail?></p>
+                        <?php if (isset($_SESSION['id'])) { ?>
+                        <a href="#" data-toggle="modal" data-target="#buyModal">Buy</a>
+                        <?php }else{ ?>
+                        <a href="#" data-toggle="modal" data-target="#loginModal">Buy</a>    
+                        <?php } ?>    
                     </div>
                 </div>
-                <?php } ?> 
+                <?php } ?>
             </div>
         </div>
     </section>
+
+    <div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Booking</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="booking_form" method="POST" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="form-group mb-2">
+                            <div class="row">
+                            <?php
+                                $sql = "SELECT * FROM tbl_list";
+                                $stmt=$db->prepare($sql);
+                                $stmt->execute();
+                                while($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                                    $id1 = $row['id'];
+                                    $list_name = $row['list_name'];
+                            ?>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="<?=$id1?>" name="check[ ]" id="defaultCheck1">
+                                        <label class="form-check-label" for="defaultCheck1">
+                                            <?=$list_name?>
+                                        </label>
+                                    </div>
+                                </div>  
+                                <?php } ?>  
+                            </div>
+               
+                        </div>
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label for="firstname">ช่างที่ท่านต้องการจองคิว</label>
+                            <select class="form-control" name="tech_id" id="tech_id">
+                                <option>Default select</option>
+                                <?php
+                                    $sql = "SELECT * FROM tbl_tech";
+                                    $stmt=$db->prepare($sql);
+                                    $stmt->execute();
+                                    while($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+                                        $id = $row['id'];
+                                        $firstname = $row['firstname'];
+                                        $lastname = $row['lastname'];
+                                        $picture = $row['picture'];
+                                ?>
+                                 <option 
+                                 data-thumbnail="backend/img/tech/<?=$picture?>" 
+                                 value="<?=$id?>"><?=$firstname?> <?=$lastname?>
+                                </option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-top: 60px;">
+                            <label for="lastname">วันที่จะจอง</label>
+                            <input type="date" class="form-control" name="b_date" id="b_date" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิดหน้าต่าง</button>
+                        <button type="submit" name="submit" id="submit" class="btn btn-primary">ยืนยัน</button>
+                        <input type="hidden" name="do" value="booking">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
@@ -255,6 +294,36 @@ require_once __DIR__.'/db/connectpdo.php';
                             });
                             setTimeout(function() {
                                 window.location.href = "index.blade.php";
+                            }, 3000);
+                        }
+                    },
+                    error: function() {}
+                });
+            }));
+        });
+        $(document).ready(function(e) {
+            $("#booking_form").on('submit', (function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "controller/bookingController.php",
+                    type: "POST",
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(response) {
+                        console.log(response)
+                        if (response == "Error") {
+                            swal("", {
+                                icon: "warning",
+                            });
+                        }
+                        if (response == "Success") {
+                            swal("Success", {
+                                icon: "success",
+                            });
+                            setTimeout(function() {
+                                window.location.href = "booking.blade.php";
                             }, 3000);
                         }
                     },
