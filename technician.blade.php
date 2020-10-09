@@ -16,144 +16,44 @@ require_once __DIR__.'/db/connectpdo.php';
 
     <?php require_once __DIR__.'/resource/navbar.php'; ?>
 
-    <section class="application-form courses--page spad" style="margin-top: 100px;">
-        <div class="container">
-            <div class="application__form__content">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-title center-title">
-                            <h2>BOOKING</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 text-center">
-                        <?php if (isset($_SESSION['id'])) { ?>
-                        <button type="button" class="site-btn second-bg" data-toggle="modal"
-                            data-target="#buyModal">BOOKING NOW</button>
-                        <?php }else{ ?>
-                        <button type="button" class="site-btn second-bg" data-toggle="modal"
-                            data-target="#loginModal">BOOKING NOW</button>
-                        <?php } ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="courses spad">
+    <section class="team team--instructor spad" style="margin-top: 100px;">
         <div class="container">
             <div class="row">
-                <div class="col-lg-7 col-md-7 col-sm-7">
-                    <div class="section-title">
-                        <h2>Our Promotion</h2>
-                    </div>
-                </div>
-                <div class="col-lg-5 col-md-5 col-sm-5">
-                    <div class="courses__all">
-                        
+                <div class="col-lg-12">
+                    <div class="section-title center-title">
+                        <h2>Our Tecnician</h2>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <?php
-                    $sql = "SELECT * FROM tbl_promotion ORDER BY id DESC";
+                    $sql = "SELECT * FROM tbl_tech ORDER BY id DESC";
                     $stmt=$db->prepare($sql);
                     $stmt->execute();
                     while($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                         $id = $row['id'];
-                        $pro_name = $row['pro_name'];
-                        $pro_price = $row['pro_price'];
-                        $pro_img = $row['pro_img'];
-                        $pro_detail = $row['pro_detail'];
+                        $firstname = $row['firstname'];
+                        $lastname = $row['lastname'];
+                        $picture = $row['picture'];
+                        $tel = $row['tel'];
+                        $expert = $row['expert'];
                 ?>
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="course__item">
-                        <img src="backend/img/promotion/<?=$pro_img?>" alt="">
-                        <h5><?=$pro_name?></h5>
-                        <h4>฿ <?=$pro_price?></h4>
-                        <p><?=$pro_detail?></p>
-                        <!-- <?php if (isset($_SESSION['id'])) { ?>
-                        <a href="#" data-toggle="modal" data-target="#buyModal">Buy</a>
-                        <?php }else{ ?>
-                        <a href="#" data-toggle="modal" data-target="#loginModal">Buy</a>    
-                        <?php } ?>     -->
+                <div class="col-lg-6">
+                    <div class="team__item">
+                        <div class="team__item__img">
+                            <img src="backend/img/tech/<?=$picture?>" alt="" style="width: 190px; height: 150px;">
+                        </div>
+                        <div class="team__item__text">
+                            <h5 style="font-size: 16px !important;"><?=$firstname?> <?=$lastname?></h5>
+                            <span>ประสบการณ์ <?=$expert?></span>
+                            <p><?=$tel?></p>
+                        </div>
                     </div>
                 </div>
                 <?php } ?>
             </div>
         </div>
     </section>
-
-    <div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Booking</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form id="booking_form" method="POST" enctype="multipart/form-data">
-                    <div class="modal-body">
-                        <div class="form-group mb-2">
-                            <div class="row">
-                            <?php
-                                $sql = "SELECT * FROM tbl_list";
-                                $stmt=$db->prepare($sql);
-                                $stmt->execute();
-                                while($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                                    $id1 = $row['id'];
-                                    $list_name = $row['list_name'];
-                            ?>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="<?=$id1?>" name="check[ ]" id="defaultCheck1">
-                                        <label class="form-check-label" for="defaultCheck1">
-                                            <?=$list_name?>
-                                        </label>
-                                    </div>
-                                </div>  
-                                <?php } ?>  
-                            </div>
-               
-                        </div>
-                        <div class="form-group" style="margin-top: 20px;">
-                            <label for="firstname">ช่างที่ท่านต้องการจองคิว</label>
-                            <select class="form-control" name="tech_id" id="tech_id">
-                                <option>Default select</option>
-                                <?php
-                                    $sql = "SELECT * FROM tbl_tech";
-                                    $stmt=$db->prepare($sql);
-                                    $stmt->execute();
-                                    while($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                                        $id = $row['id'];
-                                        $firstname = $row['firstname'];
-                                        $lastname = $row['lastname'];
-                                        $picture = $row['picture'];
-                                ?>
-                                 <option 
-                                 data-thumbnail="backend/img/tech/<?=$picture?>" 
-                                 value="<?=$id?>"><?=$firstname?> <?=$lastname?>
-                                </option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <div class="form-group" style="margin-top: 60px;">
-                            <label for="lastname">วันที่จะจอง</label>
-                            <input type="date" class="form-control" name="b_date" id="b_date" required>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิดหน้าต่าง</button>
-                        <button type="submit" name="submit" id="submit" class="btn btn-primary">ยืนยัน</button>
-                        <input type="hidden" name="do" value="booking">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
 
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

@@ -15,12 +15,18 @@ if(isset($_POST["do"]) && $_POST["do"] != "" ){
             $tel = $_POST['tel'];
             $email = $_POST['email'];
             $expert = $_POST['expert'];
+            $password_hash = password_hash($tel, PASSWORD_BCRYPT);
 
             $sql_check = "SELECT email FROM tbl_tech WHERE email = '".$email."'";
             $result_check = mysqli_query($conn, $sql_check) or die(mysqli_error());
             $num=mysqli_num_rows($result_check);
 
-            if($num > 0){
+            $sql_check1 = "SELECT email FROM tbl_admin WHERE email = '".$email."'";
+            $result_check1 = mysqli_query($conn, $sql_check1) or die(mysqli_error());
+            $num1=mysqli_num_rows($result_check1);
+
+
+            if($num > 0 || $num1 > 0){
                 echo "Error";
             }else{  
                 
@@ -48,6 +54,10 @@ if(isset($_POST["do"]) && $_POST["do"] != "" ){
                     VALUES ('$number', '$email', '$tel', '$firstname', '$lastname', '$newname1', '$expert', current_timestamp())";
                     $result = mysqli_query($conn, $sql) or die(mysqli_error());
 
+                    $sql1 = "INSERT INTO `tbl_admin`(`firstname`, `lastname`, `tel`, `email`, `password`, `status`, `create_at`, `update_at`) 
+                    VALUES ('$firstname', '$lastname', '$tel', '$email', '$password_hash', '1', current_timestamp(), current_timestamp())";
+                    $result1 = mysqli_query($conn, $sql1) or die(mysqli_error());
+
                     echo "Success";
 
                 }else{
@@ -71,6 +81,10 @@ if(isset($_POST["do"]) && $_POST["do"] != "" ){
                             // echo($sql);
                             // die();
                     $result = mysqli_query($conn, $sql) or die(mysqli_error());
+
+                    $sql1 = "INSERT INTO `tbl_admin`(`firstname`, `lastname`, `tel`, `email`, `password`, `status`, `create_at`, `update_at`) 
+                    VALUES ('$firstname', '$lastname', '$tel', '$email', '$password_hash', '1', current_timestamp(), current_timestamp())";
+                    $result1 = mysqli_query($conn, $sql1) or die(mysqli_error());
                     
                 echo "Success";
 

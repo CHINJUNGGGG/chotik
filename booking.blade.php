@@ -3,7 +3,7 @@ session_start();
 require_once __DIR__.'/db/connectpdo.php';
 $user_id = $_SESSION['id'];
 $data = array();
-$sql = "SELECT id,b_date,b_time,b_end_date,b_list FROM tbl_booking WHERE b_status = '1' AND user_id = '".$user_id."'";
+$sql = "SELECT id,b_date,b_time,b_end_date,b_list FROM tbl_booking WHERE b_status = '0' AND user_id = '".$user_id."'";
 $stmt=$db->prepare($sql);
 $stmt->execute();
 while($row=$stmt->fetch(PDO::FETCH_ASSOC)){
@@ -59,7 +59,7 @@ $row1=$stmt1->fetch(PDO::FETCH_ASSOC);
             </div>
             <div class="col-4">
                 <?php
-                    $sql4 = "SELECT b_date FROM tbl_booking WHERE b_status = '1' AND user_id = '".$user_id."' GROUP BY b_date";
+                    $sql4 = "SELECT b_date FROM tbl_booking WHERE b_status = '0' AND user_id = '".$user_id."' GROUP BY b_date";
                     $stmt4=$db->prepare($sql4);
                     $stmt4->execute();
                     while($row4=$stmt4->fetch(PDO::FETCH_ASSOC)){
@@ -81,7 +81,7 @@ $row1=$stmt1->fetch(PDO::FETCH_ASSOC);
     
                     <div class="card-body">
                 <?php
-                    $sql2 = "SELECT * FROM tbl_booking WHERE b_date = '".$b_date4."' AND b_status = '1' AND user_id = '".$user_id."'";
+                    $sql2 = "SELECT * FROM tbl_booking WHERE b_date = '".$b_date4."' AND b_status = '0' AND user_id = '".$user_id."'";
                     $stmt2=$db->prepare($sql2);
                     $stmt2->execute();
                     while($row2=$stmt2->fetch(PDO::FETCH_ASSOC)){
@@ -105,8 +105,8 @@ $row1=$stmt1->fetch(PDO::FETCH_ASSOC);
                     </div>
                 <?php
 
-                    $sql5 = "SELECT SEC_TO_TIME(SUM(time_to_sec(`tbl_booking`.`b_time`))) 
-                    As timeSum FROM tbl_booking WHERE b_date = '".$b_date4."' AND b_status = '1' AND user_id = '".$user_id."'";
+                    $sql5 = "SELECT SUM(b_price) as sum,SEC_TO_TIME(SUM(time_to_sec(`tbl_booking`.`b_time`))) 
+                    As timeSum FROM tbl_booking WHERE b_date = '".$b_date4."' AND b_status = '0' AND user_id = '".$user_id."'";
                     $stmt5=$db->prepare($sql5);
                     $stmt5->execute();
                     while($row5=$stmt5->fetch(PDO::FETCH_ASSOC)){
@@ -117,11 +117,19 @@ $row1=$stmt1->fetch(PDO::FETCH_ASSOC);
                         $real = $time1.'  '.'ชั่วโมง';
                         $real1 = $time2.'  '.'นาที';
                         $real2 = $time3.'  '.'วินาที';
-                        $real_time = $real.' '.$real1.' '.$real2;
-                       
+                        $real_time = $real.' '.$real1;
+                        $sum = $row5['sum'];
+                        $sum = number_format($sum);
                 ?>
                     <div class="card-footer text-muted">
-                        <?=$real_time?>
+                        <div class="row">
+                            <div class="col-6">
+                                <?=$real_time?>  
+                            </div>
+                            <div class="col-6 d-flex justify-content-end">
+                                <?=$sum?> บาท
+                            </div>
+                        </div>
                     </div>
                 <?php } ?>    
                 </div>

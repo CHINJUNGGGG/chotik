@@ -9,7 +9,7 @@
                 <div class="col-lg-7">
                     <nav class="header__menu">
                         <ul>
-                            <li class="active"><a href="index.blade.php">Home</a></li>
+                            <li><a href="index.blade.php">Home</a></li>
                             <li><a href="booking.blade.php">Booking</a></li>
                             <li><a href="promotion.blade.php">Promotion</a></li>
                             <li><a href="portfolio.blade.php">Portfolio</a></li>
@@ -46,3 +46,5 @@
             </div>
         </div>
     </header>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

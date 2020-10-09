@@ -109,6 +109,7 @@ table.dataTable thead .sorting_desc_disabled:before {
                                                 <th>ชื่อ-นามสกุล</th>
                                                 <th>เบอร์โทรศัพท์</th>
                                                 <th>อีเมล</th>
+                                                <th>สถานะ</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -124,6 +125,7 @@ table.dataTable thead .sorting_desc_disabled:before {
                                                     $lastname = $row['lastname'];
                                                     $tel = $row['tel'];
                                                     $email = $row['email'];
+                                                    $status = $row['status'];
                                                     $i++;
                                                 ?>
                                             <tr>
@@ -131,6 +133,7 @@ table.dataTable thead .sorting_desc_disabled:before {
                                                 <td><?=$firstname?> <?=$lastname?></td>
                                                 <td><?=$tel?></td>
                                                 <td><?=$email?></td>
+                                                <td><?php if($status == '0'){ echo '<font style="color: red; font-weight: bold;">Admin</font>'; }else{ echo '<font style="color: green; font-weight: bold;">Technician</font>'; } ?></td>
                                                 <td>
                                                     <button type="button" class="btn btn-sm btn-secondary"
                                                         data-toggle="modal" data-target="#view_modal"

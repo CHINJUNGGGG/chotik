@@ -22,14 +22,15 @@ if(isset($_POST["do"]) && $_POST["do"] != "" ){
             // die();
             
             for ($i=0; $i<sizeof ($check);$i++) {
-                $sql_time = "SELECT list_time FROM tbl_list WHERE id = '".$check[$i]."'";
+                $sql_time = "SELECT list_time,list_price FROM tbl_list WHERE id = '".$check[$i]."'";
                 $stmt=$db->prepare($sql_time);
                 $stmt->execute();
                 $row=$stmt->fetch(PDO::FETCH_ASSOC);
                 $list_time = $row['list_time'];
+                $list_price = $row['list_price'];
 
-                $sql = "INSERT INTO `tbl_booking`(`b_list`, `b_date`, `b_end_date`, `user_id`, `tech_id`, `b_time`, `create_at`) 
-                VALUES ('".$check[$i]. "', '$b_date', '$b_date', '$user_id', '$tech_id', '$list_time', current_timestamp())";
+                $sql = "INSERT INTO `tbl_booking`(`b_list`, `b_date`, `b_end_date`, `b_price`, `user_id`, `tech_id`, `b_time`, `create_at`) 
+                VALUES ('".$check[$i]. "', '$b_date', '$b_date', '$list_price', '$user_id', '$tech_id', '$list_time', current_timestamp())";
                 // echo($sql);
                 // die();
                 $result = mysqli_query($conn, $sql) or die(mysqli_error());

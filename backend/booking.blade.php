@@ -155,12 +155,16 @@ table.dataTable thead .sorting_desc_disabled:before {
                                                 <td><?=$list_name?></td>
                                                 <td><?=$firstname?> <?=$lastname?></td>
                                                 <td><?=$firstname1?> <?=$lastname1?></td>
-                                                <td><?php if($b_status == '0'){ echo '<font style="color: orange; font-weight: bold;">รอการรับเรื่อง</font>'; }else{ echo '<font style="color: green; font-weight: bold;">รับเรื่องแล้ว</font>'; } ?>
+                                                <td><?php if($b_status == '0'){ echo '<font style="color: orange; font-weight: bold;">รอการรับเรื่อง</font>'; }else if($b_status == '1'){ echo '<font style="color: green; font-weight: bold;">รับเรื่องแล้ว</font>'; }else{ echo '<font style="color: blue; font-weight: bold;">แบ่งเงินสำเร็จ</font>'; } ?>
                                                 </td>
                                                 <td>
                                                     <?php 
                                                     if($b_status == '0'){
                                                         echo '<a href="controller/bookingController.php?id='.$id.'"><button type="button" class="btn btn-sm btn-success" onclick="return confirm("คุณต้องการอนุมัติรายการนี้ ใช่หรือไม่ ?")">รับเรื่อง</button></a> ';
+                                                    }else if($b_status == '1'){
+                                                        echo '<a href="controller/salaryController.php?id='.$id.'"><button type="button" class="btn btn-sm btn-info" onclick="return confirm("คุณต้องการทำรายการนี้ ใช่หรือไม่ ?")">แบ่งเงิน</button></a> ';
+                                                    }else{
+                                                        echo " ";
                                                     }
                                                     ?>
                                                 </td>

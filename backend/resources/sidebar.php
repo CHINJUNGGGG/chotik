@@ -1,6 +1,6 @@
 <?php 
 session_start();
-$provider = $_SESSION['provider'];
+$status = $_SESSION['status'];
 ?>
        
        <div class="sidebar-menu">
@@ -16,6 +16,7 @@ $provider = $_SESSION['provider'];
             
                         <?php
                             if(isset($_SESSION['id'])){
+                                if($status == '0'){
                                     echo 
                                     '<li class="">
                                         <a href="index.blade.php"><i class="ti-dashboard"></i><span>Homepage</span></a>
@@ -43,21 +44,19 @@ $provider = $_SESSION['provider'];
                                     </li>';
                                 }else{
                                     echo 
-                                    '<li class="active">
-                                        <a href="javascript:void(0)" aria-expanded="true"><i class="ti-dashboard"></i><span>Homepage2</span></a>
-                                        <ul class="collapse">
-                                            <li class="active"><a href="check.blade.php">Check in-out</a></li>
-                                        </ul>
+                                    '<li class="">
+                                        <a href="account.blade.php"><i class="ti-dashboard"></i><span>Accounting</span></a>
                                     </li>
-                                    <li>
-                                        <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-align-left"></i> <span>
-                                                User Management</span></a>
-                                        <ul class="collapse">
-                                            <li><a href="profile.blade.php">Profile</a></li>
-                                            <li><a href="logout.blade.php">Logout</a></li>
-                                        </ul>
+                                    <li class="">
+                                        <a href="logout.blade.php"><i class="ti-dashboard"></i><span>Logout</span></a>
                                     </li>';
                                 }
+                            }else{
+                                echo "<script>";
+                                echo "alert('กรุณาล็อคอินเข้าสู่ระบบ');";
+                                echo "window.location.href='login.blade.php';";
+                                echo "</script>";
+                            }     
                          
                         ?> 
                         </ul>
