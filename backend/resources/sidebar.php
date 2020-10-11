@@ -34,7 +34,11 @@ $status = $_SESSION['status'];
                                         <a href="promotion.blade.php"><i class="fa fa-heart"></i><span>Promotion</span></a>
                                     </li>
                                     <li class="">
-                                        <a href="portfolio.blade.php"><i class="fa fa-picture-o"></i><span>Portfolio</span></a>
+                                        <a href=javascript:void(0)"><i class="fa fa-picture-o"></i><span>Portfolio</span></a>
+                                        <ul class="collapse">
+                                            <li><a href="portfolio.cus.blade.php">Customer</a></li>
+                                            <li><a href="portfolio.shop.blade.php">Shop</a></li>
+                                        </ul>
                                     </li>
                                     <li class="">
                                         <a href="admin.blade.php"><i class="fa fa-file-o"></i><span>Admin Management</span></a>

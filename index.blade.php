@@ -22,7 +22,7 @@ require_once __DIR__.'/db/connectpdo.php';
                 <div class="col-lg-12 text-center">
                     <div class="hero__text">
                         <h2>chotik nails & spa</h2>
-                        <a href="#" class="primary-btn">Contact us</a>
+                        <a href="contact.blade.php" class="primary-btn">Contact us</a>
                         <a href="promotion.blade.php" class="primary-btn second-bg">See Promotion</a>
                     </div>
                 </div>
@@ -104,10 +104,7 @@ require_once __DIR__.'/db/connectpdo.php';
                             <h5><?=$firstname?> <?=$lastname?></h5>
                             <span>Tel.<?=$tel?></span>
                             <div class="team__item__social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
-                                <a href="#"><i class="fa fa-dribbble"></i></a>
+                     
                             </div>
                         </div>
                     </div>
@@ -159,16 +156,16 @@ require_once __DIR__.'/db/connectpdo.php';
                 <form action="controller/registerController.php" id="register_form" method="POST"
                     enctype="multipart/form-data">
                     <div class="modal-body">
-                        <!-- <div class="form-group col-12">
+                        <div class="form-group">
                             <label for="prefixname" >คำนำหน้านาม</label>
                             <select name="prefixname" id="prefixname" class="form-control">
                                 <option>นาย</option>
                                 <option>นาง</option>
                                 <option>นางสาว</option>
                             </select>
-                        </div> -->
+                        </div>
                         <div class="form-group">
-                            <label for="firstname">ชื่อ</label>
+                            <label for="firstname"  style="margin-top: 10px;">ชื่อ</label>
                             <input type="text" class="form-control" name="firstname" id="firstname" required>
                         </div>
                         <div class="form-group">
@@ -199,6 +196,14 @@ require_once __DIR__.'/db/connectpdo.php';
     </div>
     
     <?php require_once __DIR__.'/resource/script.php'; ?>
+    <script>
+        $(document).ready(function(){
+            $('ul li a').click(function(){
+                $('li a').removeClass("active");
+                $(this).addClass("active");
+            });
+        });
+    </script>
     <script type="text/javascript">
         $(document).ready(function(e) {
             $("#register_form").on('submit', (function(e) {

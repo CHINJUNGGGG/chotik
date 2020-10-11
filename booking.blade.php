@@ -3,7 +3,7 @@ session_start();
 require_once __DIR__.'/db/connectpdo.php';
 $user_id = $_SESSION['id'];
 $data = array();
-$sql = "SELECT id,b_date,b_time,b_end_date,b_list FROM tbl_booking WHERE b_status = '0' AND user_id = '".$user_id."'";
+$sql = "SELECT id,b_date,b_time,b_end_date,b_list,b_start_time FROM tbl_booking WHERE b_status = '0' AND user_id = '".$user_id."' AND promotion IS NULL";
 $stmt=$db->prepare($sql);
 $stmt->execute();
 while($row=$stmt->fetch(PDO::FETCH_ASSOC)){
@@ -11,6 +11,7 @@ while($row=$stmt->fetch(PDO::FETCH_ASSOC)){
     $b_list = $row['b_list'];
     $b_date = $row['b_date'];
     $b_time = $row['b_time'];
+    $b_start_time = $row['b_start_time'];
     $b_end_date = $row['b_end_date'];
 
 $sql1 = "SELECT list_name FROM tbl_list WHERE id = :b_list";
@@ -23,7 +24,7 @@ $row1=$stmt1->fetch(PDO::FETCH_ASSOC);
         'id' => $id,
         'title'=> $list_name,
         'start'=> $b_date,
-        'end'=> $b_date_end
+        'end'=> $b_end_date
     );
 }
 ?>
@@ -81,7 +82,7 @@ $row1=$stmt1->fetch(PDO::FETCH_ASSOC);
     
                     <div class="card-body">
                 <?php
-                    $sql2 = "SELECT * FROM tbl_booking WHERE b_date = '".$b_date4."' AND b_status = '0' AND user_id = '".$user_id."'";
+                    $sql2 = "SELECT * FROM tbl_booking WHERE b_date = '".$b_date4."' AND b_status = '0' AND user_id = '".$user_id."' AND promotion IS NULL";
                     $stmt2=$db->prepare($sql2);
                     $stmt2->execute();
                     while($row2=$stmt2->fetch(PDO::FETCH_ASSOC)){
@@ -100,6 +101,25 @@ $row1=$stmt1->fetch(PDO::FETCH_ASSOC);
                 ?>
                         <div class="alert alert-secondary" role="alert">
                             <?=$list_name3?>
+                        </div>
+                <?php } ?>
+                <?php
+                    $sql5 = "SELECT * FROM tbl_booking WHERE b_date = '".$b_date4."' AND b_status = '0' AND user_id = '".$user_id."' AND b_list IS NULL";
+                    $stmt5=$db->prepare($sql5);
+                    $stmt5->execute();
+                    while($row5=$stmt5->fetch(PDO::FETCH_ASSOC)){
+                        $promotion = $row5['promotion'];
+                        
+                    $sql6 = "SELECT pro_name FROM tbl_promotion WHERE id = :promotion";
+                    $stmt6=$db->prepare($sql6);
+                    $stmt6->bindparam(':promotion', $promotion);
+                    $stmt6->execute();
+                    $row6=$stmt6->fetch(PDO::FETCH_ASSOC);
+                        $pro_name = $row6['pro_name'];  
+                    
+                ?>
+                        <div class="alert alert-info" role="alert">
+                            <?=$pro_name?>
                         </div>
                 <?php } ?>
                     </div>
@@ -183,16 +203,16 @@ $row1=$stmt1->fetch(PDO::FETCH_ASSOC);
                 <form action="controller/registerController.php" id="register_form" method="POST"
                     enctype="multipart/form-data">
                     <div class="modal-body">
-                        <!-- <div class="form-group col-12">
+                        <div class="form-group">
                             <label for="prefixname" >คำนำหน้านาม</label>
                             <select name="prefixname" id="prefixname" class="form-control">
                                 <option>นาย</option>
                                 <option>นาง</option>
                                 <option>นางสาว</option>
                             </select>
-                        </div> -->
+                        </div>
                         <div class="form-group">
-                            <label for="firstname">ชื่อ</label>
+                            <label for="firstname"  style="margin-top: 10px;">ชื่อ</label>
                             <input type="text" class="form-control" name="firstname" id="firstname" required>
                         </div>
                         <div class="form-group">
@@ -308,6 +328,7 @@ $row1=$stmt1->fetch(PDO::FETCH_ASSOC);
         }));
     });
     </script>
+    
 </body>
 
 </html>

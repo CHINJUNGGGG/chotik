@@ -61,7 +61,7 @@ table.dataTable thead .sorting_desc_disabled:before {
                             <h4 class="page-title pull-left">Home</h4>
                             <ul class="breadcrumbs pull-left">
                                 <li><a href="index.blade.php">Home</a></li>
-                                <li><a href="view.user.blade.php">Admin Management</a></li>
+                                <li><a href="view.user.blade.php">Portfolio</a></li>
                             </ul>
                         </div>
                     </div>
@@ -94,13 +94,14 @@ table.dataTable thead .sorting_desc_disabled:before {
                     <div class="col-12 mt-5">
                         <div class="card">
                             <div class="card-header" style="border-bottom: 1px solid rgb(247 247 247) !important;">
-                                <h5>Portfolio</h5>
+                            <h5>Portfolio</h5>
                             </div>
-                           
+
                             <div class="card-body">
-                            <button type="button" class="btn btn-sm btn-secondary mb-4" data-toggle="modal" data-target="#add_modal">
-                                add
-                            </button>
+                                <button type="button" class="btn btn-sm btn-secondary mb-4" data-toggle="modal"
+                                    data-target="#add_modal">
+                                    เพิ่มรูปภาพ
+                                </button>
                                 <div class="data-tables datatable-primary">
                                     <table id="dataTable2" class="text-center">
                                         <thead class="text-capitalize" style="background-color: #000;">
@@ -115,19 +116,19 @@ table.dataTable thead .sorting_desc_disabled:before {
                                         <tbody>
                                             <?php
                                                 $i=0;
-                                                $sql = "SELECT * FROM tbl_portfolio";
-                                                $stmt=$db->prepare($sql);
-                                                $stmt->execute();
-                                                while($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-                                                    $id = $row['id'];
-                                                    $picture = $row['picture'];
-                                                    $user_id = $row['user_id'];
-                                                    $detail = $row['detail'];
+                                                $sql3 = "SELECT * FROM tbl_portfolio WHERE admin_id IS NOT NULL";
+                                                $stmt3=$db->prepare($sql3);
+                                                $stmt3->execute();
+                                                while($row3=$stmt3->fetch(PDO::FETCH_ASSOC)){
+                                                    $id = $row3['id'];
+                                                    $picture = $row3['picture'];
+                                                    $user_id3 = $row3['user_id'];
+                                                    $detail = $row3['detail'];
                                                     $i++;
 
-                                                    $sql2 = "SELECT * FROM tbl_users WHERE id = :user_id";
+                                                    $sql2 = "SELECT * FROM tbl_users WHERE id = :user_id3";
                                                     $stmt=$db->prepare($sql2);
-                                                    $stmt->bindparam(':user_id', $user_id);
+                                                    $stmt->bindparam(':user_id3', $user_id3);
                                                     $stmt->execute();
                                                     $row2=$stmt->fetch(PDO::FETCH_ASSOC);
                                                         $firstname = $row2['firstname'];
@@ -135,7 +136,8 @@ table.dataTable thead .sorting_desc_disabled:before {
                                                 ?>
                                             <tr>
                                                 <td><?=$i?></td>
-                                                <td><img src="img/port/<?=$picture?>" style="width: 200px; height: 150px;"></td>
+                                                <td><img src="img/port/<?=$picture?>"
+                                                        style="width: 200px; height: 150px;"></td>
                                                 <td><?=$firstname?> <?=$lastname?></td>
                                                 <td><?=$detail?></td>
                                                 <td>
@@ -211,6 +213,46 @@ table.dataTable thead .sorting_desc_disabled:before {
             </div>
         </div>
 
+        <div class="modal fade" id="shop_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Modal</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="add_form1" method="POST" enctype="multipart/form-data">
+                        <div class="modal-body">
+                            <div class="form-row">
+                                <div class="form-group col-12">
+                                    <label for="picture">รูปภาพ</label>
+                                    <input type="file" class="form-control" name="picture" id="picture">
+                                </div>
+                                <div class="form-group col-12">
+                                    <label for="exampleInputEmail1">แอดมิน</label>
+                                    <select class="form-control form-control-lg" name="user_id" id="exampleInputEmail1">
+                                        <option value="Admin" readonly>แอดมิน</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-12">
+                                    <label for="exampleInputEmail1">รายละเอียด</label>
+                                    <textarea name="detail" class="form-control" cols="15" rows="5"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-secondary">Submit</button>
+                            <input type="hidden" name="do" value="add1">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <?php require_once __DIR__.'/resources/script.php'; ?>
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
@@ -235,7 +277,9 @@ table.dataTable thead .sorting_desc_disabled:before {
                     dataType: "json",
                     success: function(response) {
                         console.log(response)
-                        var arr_input_key = ['tel', 'firstname', 'lastname', 'prefixname', 'username']
+                        var arr_input_key = ['tel', 'firstname', 'lastname', 'prefixname',
+                            'username'
+                        ]
                         $.each(response, function(indexInArray, valueOfElement) {
                             if (jQuery.inArray(indexInArray, arr_input_key) !== -
                                 1) {
@@ -252,36 +296,66 @@ table.dataTable thead .sorting_desc_disabled:before {
         });
         </script>
         <script>
-            $(document).ready(function(e) {
-                $("#add_form").on('submit', (function(e) {
-                    e.preventDefault();
-                    $.ajax({
-                        url: "controller/portfolioController.php",
-                        type: "POST",
-                        data: new FormData(this),
-                        contentType: false,
-                        cache: false,
-                        processData: false,
-                        success: function(response) {
-                            console.log(response)
-                            if (response == "Error") {
-                                swal("Please complete all information.", {
-                                    icon: "warning",
-                                });
-                            }
-                            if (response == "Success") {
-                                swal("Add successfully.", {
-                                    icon: "success",
-                                });
-                                setTimeout(function() {
-                                    window.location.href = "portfolio.blade.php";
-                                }, 2000);
-                            }
-                        },
-                        error: function() {}
-                    });
-                }));
-            });
+        $(document).ready(function(e) {
+            $("#add_form").on('submit', (function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "controller/portfolioController.php",
+                    type: "POST",
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(response) {
+                        console.log(response)
+                        if (response == "Error") {
+                            swal("Please complete all information.", {
+                                icon: "warning",
+                            });
+                        }
+                        if (response == "Success") {
+                            swal("Add successfully.", {
+                                icon: "success",
+                            });
+                            setTimeout(function() {
+                                window.location.href = "portfolio.cus.blade.php";
+                            }, 2000);
+                        }
+                    },
+                    error: function() {}
+                });
+            }));
+        });
+        $(document).ready(function(e) {
+            $("#add_form1").on('submit', (function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "controller/portfolioController.php",
+                    type: "POST",
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(response) {
+                        console.log(response)
+                        if (response == "Error") {
+                            swal("Please complete all information.", {
+                                icon: "warning",
+                            });
+                        }
+                        if (response == "Success") {
+                            swal("Add successfully.", {
+                                icon: "success",
+                            });
+                            setTimeout(function() {
+                                window.location.href = "portfolio.cus.blade.php";
+                            }, 2000);
+                        }
+                    },
+                    error: function() {}
+                });
+            }));
+        });
         </script>
 </body>
 

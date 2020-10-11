@@ -1,3 +1,4 @@
+    
     <header class="header" style="height: 90px;">
         <div class="container">
             <div class="row">
@@ -9,10 +10,15 @@
                 <div class="col-lg-7">
                     <nav class="header__menu">
                         <ul>
-                            <li><a href="index.blade.php">Home</a></li>
+                            <li><a class="active" href="index.blade.php">Home</a></li>
                             <li><a href="booking.blade.php">Booking</a></li>
                             <li><a href="promotion.blade.php">Promotion</a></li>
-                            <li><a href="portfolio.blade.php">Portfolio</a></li>
+                            <li><a href="#">Portfolio</a>
+                                <ul class="dropdown">
+                                        <li><a href="portfolio.blade.php?id=1&id1=Customer">Customer</a></li>
+                                        <li><a href="portfolio.blade.php?id=2&id2=Shop">Shop</a></li>
+                                    </ul>
+                            </li>
                             <li><a href="contact.blade.php">Contact</a></li>
                         </ul>
                     </nav>

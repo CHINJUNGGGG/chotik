@@ -1,7 +1,7 @@
 <?php
-$hostname = 'multiinnovation_db_1';
+$hostname = 'localhost';
 $username = 'root';
-$password = 'root';
+$password = '';
 $database = 'chotik';
 
 $conn =  new mysqli($hostname, $username, $password, $database);

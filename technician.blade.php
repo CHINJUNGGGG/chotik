@@ -98,16 +98,16 @@ require_once __DIR__.'/db/connectpdo.php';
                 <form action="controller/registerController.php" id="register_form" method="POST"
                     enctype="multipart/form-data">
                     <div class="modal-body">
-                        <!-- <div class="form-group col-12">
+                        <div class="form-group">
                             <label for="prefixname" >คำนำหน้านาม</label>
                             <select name="prefixname" id="prefixname" class="form-control">
                                 <option>นาย</option>
                                 <option>นาง</option>
                                 <option>นางสาว</option>
                             </select>
-                        </div> -->
+                        </div>
                         <div class="form-group">
-                            <label for="firstname">ชื่อ</label>
+                            <label for="firstname"  style="margin-top: 10px;">ชื่อ</label>
                             <input type="text" class="form-control" name="firstname" id="firstname" required>
                         </div>
                         <div class="form-group">
