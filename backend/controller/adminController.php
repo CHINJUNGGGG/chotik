@@ -26,7 +26,7 @@ if(isset($_POST["do"]) && $_POST["do"] != "" ){
                 echo "Error";
             }else{    
     
-            $sql = "INSERT INTO `tbl_admin`(`firstname`, `lastname`, `tel`, `email`, `password`, `create_at`, `update_at`) 
+            $sql = "INSERT INTO `tbl_users`(`firstname`, `lastname`, `tel`, `email`, `password`, `create_at`, `update_at`) 
                     VALUES ('$firstname', '$lastname', '$tel', '$email', '$password_hash', current_timestamp(), current_timestamp())";
                 
             $result = mysqli_query($conn, $sql) or die(mysqli_error());
@@ -42,7 +42,7 @@ if(isset($_POST["do"]) && $_POST["do"] != "" ){
         include('../db/connectpdo.php'); 
 
         $ID = $_POST["id"];
-        $sql = "SELECT * FROM tbl_admin WHERE id = :ID";
+        $sql = "SELECT * FROM tbl_users WHERE id = :ID";
         $stmt=$db->prepare($sql);
         $stmt->bindparam(':ID',$ID);
         $stmt->execute();

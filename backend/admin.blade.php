@@ -94,7 +94,7 @@ table.dataTable thead .sorting_desc_disabled:before {
                     <div class="col-12 mt-5">
                         <div class="card">
                             <div class="card-header" style="border-bottom: 1px solid rgb(247 247 247) !important;">
-                                <h5>Portfolio</h5>
+                                <h5>Admin</h5>
                             </div>
                            
                             <div class="card-body">
@@ -116,7 +116,7 @@ table.dataTable thead .sorting_desc_disabled:before {
                                         <tbody>
                                             <?php
                                                 $i=0;
-                                                $sql = "SELECT * FROM tbl_admin";
+                                                $sql = "SELECT * FROM tbl_users WHERE status = 0";
                                                 $stmt=$db->prepare($sql);
                                                 $stmt->execute();
                                                 while($row=$stmt->fetch(PDO::FETCH_ASSOC)){

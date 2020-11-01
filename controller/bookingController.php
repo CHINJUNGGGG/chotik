@@ -20,39 +20,47 @@ if(isset($_POST["do"]) && $_POST["do"] != "" ){
             $check = $_POST['check'];
             $b_start_time = $_POST['b_start_time'];
 
-            $sql_date = "SELECT b_start_time,b_date,tech_id FROM tbl_booking WHERE tech_id = '".$tech_id."'";
+        
+
+            $sql_date = "SELECT b_start_time,b_date,tech_id,b_status FROM tbl_booking WHERE tech_id = '".$tech_id."' AND b_status NOT IN (2, 3, 4)";
             $stmt_date=$db->prepare($sql_date);
             $stmt_date->execute();
             $row_date=$stmt_date->fetch(PDO::FETCH_ASSOC);
+            $b_status = $row_date['b_status'];
             $time_check = $row_date['b_start_time'] ??= '0';
             $date_check = $row_date['b_date'] ??= '0';
             $technician_id = $row_date['id'] ??= '0';
 
-            // print_r($_POST);
-            // die();
-
-            if($b_start_time == $time_check && $b_date == $date_check || $tech_id == $technician_id){
-                echo "Time_out";
+            if($tech_id == '0'){
+                echo "tech";
+            }else if($b_start_time == '00:00:00'){
+                echo "time";
+            }else if($b_status == '0' || $b_status == '1'){
+                echo "no";
             }else{
-                for ($i=0; $i<sizeof ($check);$i++) {
-                    $sql_time = "SELECT list_time,list_price FROM tbl_list WHERE id = '".$check[$i]."'";
-                    $stmt=$db->prepare($sql_time);
-                    $stmt->execute();
-                    $row=$stmt->fetch(PDO::FETCH_ASSOC);
-                    $list_time = $row['list_time'];
-                    $list_price = $row['list_price'];
+                if($b_start_time == $time_check && $b_date == $date_check || $tech_id == $technician_id){
+                    echo "Time_out";
+                }else{
+                    for ($i=0; $i<sizeof ($check);$i++) {
+                        $sql_time = "SELECT list_time,list_price FROM tbl_list WHERE id = '".$check[$i]."'";
+                        $stmt=$db->prepare($sql_time);
+                        $stmt->execute();
+                        $row=$stmt->fetch(PDO::FETCH_ASSOC);
+                        $list_time = $row['list_time'];
+                        $list_price = $row['list_price'];
 
-                    $sql = "INSERT INTO `tbl_booking`(`b_list`, `b_date`, `b_end_date`, `b_start_time`, `b_price`, `user_id`, `tech_id`, `b_time`, `create_at`) 
-                    VALUES ('".$check[$i]. "', '$b_date', '$b_date', '$b_start_time', '$list_price', '$user_id', '$tech_id', '$list_time', current_timestamp())";
-                    // echo($sql);
-                    // die();
-                    $result = mysqli_query($conn, $sql) or die(mysqli_error());
+                        $sql = "INSERT INTO `tbl_booking`(`b_list`, `b_date`, `b_end_date`, `b_start_time`, `b_price`, `user_id`, `tech_id`, `b_time`, `create_at`) 
+                        VALUES ('".$check[$i]. "', '$b_date', '$b_date', '$b_start_time', '$list_price', '$user_id', '$tech_id', '$list_time', current_timestamp())";
+                        // echo($sql);
+                        // die();
+                        $result = mysqli_query($conn, $sql) or die(mysqli_error());
 
-                    // $sql1 = "UPDATE tbl_tech SET status = '1' WHERE id = '".$tech_id."'";
-                    // $result1 = mysqli_query($conn, $sql1) or die(mysqli_error());
+                        // $sql1 = "UPDATE tbl_tech SET status = '1' WHERE id = '".$tech_id."'";
+                        // $result1 = mysqli_query($conn, $sql1) or die(mysqli_error());
+                    }  
+                    echo "Success";
                 }  
-                echo "Success";
-            }    
+            }  
 
         break;
 

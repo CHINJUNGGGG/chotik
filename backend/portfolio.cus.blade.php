@@ -116,7 +116,7 @@ table.dataTable thead .sorting_desc_disabled:before {
                                         <tbody>
                                             <?php
                                                 $i=0;
-                                                $sql3 = "SELECT * FROM tbl_portfolio WHERE admin_id IS NOT NULL";
+                                                $sql3 = "SELECT * FROM tbl_portfolio WHERE type = 1";
                                                 $stmt3=$db->prepare($sql3);
                                                 $stmt3->execute();
                                                 while($row3=$stmt3->fetch(PDO::FETCH_ASSOC)){
@@ -182,7 +182,7 @@ table.dataTable thead .sorting_desc_disabled:before {
                                         <option>เลือกลูกค้า</option>
                                         <?php
                             
-                                                $sql = "SELECT * FROM tbl_users";
+                                                $sql = "SELECT * FROM tbl_users WHERE status = 2";
                                                 $stmt=$db->prepare($sql);
                                                 $stmt->execute();
                                                 while($row=$stmt->fetch(PDO::FETCH_ASSOC)){

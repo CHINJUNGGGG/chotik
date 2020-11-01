@@ -244,7 +244,7 @@ table.dataTable thead .sorting_desc_disabled:before {
                                 <div class="form-group col-6">
                                     <label for="exampleInputEmail1">อีเมล</label>
                                     <input type="email" class="form-control" id="exampleInputEmail1" name="email" id="email"
-                                        required>
+                                        readonly>
                                 </div>
                                 <div class="form-group col-6">
                                     <label for="exampleInputEmail1">เบอร์โทรศัพท์</label>
@@ -344,7 +344,7 @@ table.dataTable thead .sorting_desc_disabled:before {
                         success: function(response) {
                             console.log(response)
                             if (response == "Error") {
-                                swal("Please complete all information.", {
+                                swal("Email to using.", {
                                     icon: "warning",
                                 });
                             }
@@ -374,7 +374,7 @@ table.dataTable thead .sorting_desc_disabled:before {
                         success: function(response) {
                             console.log(response)
                             if (response == "Error") {
-                                swal("Please complete all information.", {
+                                swal("Email to using.", {
                                     icon: "warning",
                                 });
                             }

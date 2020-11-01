@@ -9,12 +9,15 @@ if(isset($_POST["do"]) && $_POST["do"] != "" ){
 
             $email = $_POST['email'];
             $password = $_POST['password'];
+
+            // print_r($_POST);
+            // die();
     
                 if(isset($_POST['email']) && $_POST['email'] != '' && isset($_POST['password']) && $_POST['password'] != '') {
                     $email = trim($_POST['email']);
                     $password = trim($_POST['password']);
 
-                    $query = "SELECT * FROM tbl_admin WHERE `email` = ? LIMIT 0,1";
+                    $query = "SELECT * FROM tbl_users WHERE `email` = ? LIMIT 0,1";
                     $stmt = $db->prepare($query);
                     $stmt->bindParam(1, $email);
                     $stmt->execute();
@@ -33,14 +36,19 @@ if(isset($_POST["do"]) && $_POST["do"] != "" ){
                       
                         if(password_verify($password,$MEMBER_PASSWORD_HASH)){
                             if($row["status"] == "0"){
-                                echo "Success";
+                                echo "admin";
                             }
                             if($row["status"] == "1"){
-                                echo "Success";
+                                echo "staff";
+                            }
+                            if($row["status"] == "2"){
+                                echo "users";
                             }
                         }else{
                             echo "Error";
                         }
+                    }else{
+                        echo "Error";
                     }
                 }   
         break;

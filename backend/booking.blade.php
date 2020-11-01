@@ -94,15 +94,20 @@ table.dataTable thead .sorting_desc_disabled:before {
                     <div class="col-12 mt-5">
                         <div class="card">
                             <div class="card-header" style="border-bottom: 1px solid rgb(247 247 247) !important;">
-                                <h5>Data customer</h5>
+                                <h5>Data Booking</h5>
                             </div>
                             <div class="card-body">
                                 <div class="data-tables datatable-primary">
                                     <table id="dataTable2" class="text-center">
                                         <thead class="text-capitalize" style="background-color: #000;">
                                             <tr>
-                                                <th>#</th>
+                                                <th class="text-center">
+                                                    <!-- <input type="checkbox" name="check" class="head_input"
+                                                    id="example-select-all"> -->
+                                                    #
+                                                </th>
                                                 <th>วันที่จอง</th>
+                                                <th>เวลาที่จอง</th>
                                                 <th>รายการที่จอง</th>
                                                 <th>ลูกค้าที่จอง</th>
                                                 <th>ช่างที่รับผิดชอบ</th>
@@ -120,6 +125,7 @@ table.dataTable thead .sorting_desc_disabled:before {
                                                 while($row=$stmt1->fetch(PDO::FETCH_ASSOC)){
                                                     $id = $row['id'];
                                                     $b_list = $row['b_list'];
+                                                    $start_time = $row['b_start_time'];
                                                     $b_date = $row['b_date'];
                                                     $user_id = $row['user_id'];
                                                     $tech_id = $row['tech_id'];
@@ -150,17 +156,29 @@ table.dataTable thead .sorting_desc_disabled:before {
                                                     $lastname1 = $row3['lastname'];    
                                                 ?>
                                             <tr>
-                                                <td><?=$id?></td>
+                                                <td>
+                                                    <!-- <input type="checkbox" name="id[]" class='checkbox1' value="<?=$id?>"> -->
+                                                    <?=$id?>
+                                                </td>
                                                 <td><?=$b_date?></td>
+                                                <td><?=$start_time?></td>
                                                 <td><?=$list_name?></td>
                                                 <td><?=$firstname?> <?=$lastname?></td>
                                                 <td><?=$firstname1?> <?=$lastname1?></td>
-                                                <td><?php if($b_status == '0'){ echo '<font style="color: orange; font-weight: bold;">รอการรับเรื่อง</font>'; }else if($b_status == '1'){ echo '<font style="color: green; font-weight: bold;">รับเรื่องแล้ว</font>'; }else{ echo '<font style="color: blue; font-weight: bold;">แบ่งเงินสำเร็จ</font>'; } ?>
+                                                <td>
+                                                <?php 
+                                                    if($b_status == '0'){ echo '<font style="color: orange; font-weight: bold;">รอการรับจอง</font>'; 
+                                                    }else if($b_status == '1'){ echo '<font style="color: green; font-weight: bold;">รับจองแล้ว</font>'; 
+                                                    }else if($b_status == '2'){ echo '<font style="color: red; font-weight: bold;">ยกเลิกการจองโดยระบบ</font>'; 
+                                                    }else if($b_status == '3'){ echo '<font style="color: red; font-weight: bold;">ยกเลิกการโดยลูกค้า</font>'; 
+                                                    }else{ echo '<font style="color: blue; font-weight: bold;">แบ่งเงินสำเร็จ</font>'; }
+                                                ?>
                                                 </td>
                                                 <td>
                                                     <?php 
                                                     if($b_status == '0'){
-                                                        echo '<a href="controller/bookingController.php?id='.$id.'"><button type="button" class="btn btn-sm btn-success" onclick="return confirm("คุณต้องการอนุมัติรายการนี้ ใช่หรือไม่ ?")">รับเรื่อง</button></a> ';
+                                                        echo '<a href="controller/bookingController.php?id='.$id.'"><button type="button" class="btn btn-sm btn-success" onclick="return confirm("คุณต้องการอนุมัติรายการนี้ ใช่หรือไม่ ?")">รับจอง</button></a> 
+                                                              <a href="controller/cancelController.php?id='.$id.'"><button type="button" class="btn btn-sm btn-danger" onclick="return confirm("คุณต้องการทำรายการนี้ ใช่หรือไม่ ?")">ไม่รับจอง</button></a>';
                                                     }else if($b_status == '1'){
                                                         echo '<a href="controller/salaryController.php?id='.$id.'"><button type="button" class="btn btn-sm btn-info" onclick="return confirm("คุณต้องการทำรายการนี้ ใช่หรือไม่ ?")">แบ่งเงิน</button></a> ';
                                                     }else{

@@ -38,7 +38,7 @@ $stmt2=$db->prepare($sql2);
 $stmt2->bindparam(':tech_id',$tech_id);
 $stmt2->execute();
 
-$sql4 = "UPDATE tbl_booking SET b_status = '2', update_at = current_timestamp() WHERE id = :id";
+$sql4 = "UPDATE tbl_booking SET b_status = '4', update_at = current_timestamp() WHERE id = :id";
 $stmt4=$db->prepare($sql4);
 $stmt4->bindparam(':id',$id);
 $stmt4->execute();

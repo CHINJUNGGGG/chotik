@@ -63,13 +63,26 @@
                                 icon: "warning",
                             });
                         }
-                        if (response == "Success") {
+                        if (response == "users") {
+                            swal("สามารถเช้าได้เฉพาะแอดมินหรือช่างเท่านั้น", {
+                                icon: "warning",
+                            });
+                        }
+                        if (response == "admin") {
                             swal("Success", {
                                 icon: "success",
                             });
                             setTimeout(function() {
                                 window.location.href = "index.blade.php";
-                            }, 3000);
+                            }, 1500);
+                        }
+                        if (response == "staff") {
+                            swal("Success", {
+                                icon: "success",
+                            });
+                            setTimeout(function() {
+                                window.location.href = "index.blade.php";
+                            }, 1500);
                         }
                     },
                     error: function() {}

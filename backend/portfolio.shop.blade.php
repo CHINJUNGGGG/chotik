@@ -116,7 +116,7 @@ table.dataTable thead .sorting_desc_disabled:before {
                                         <tbody>
                                             <?php
                                                 $i=0;
-                                                $sql3 = "SELECT * FROM tbl_portfolio WHERE user_id > 1";
+                                                $sql3 = "SELECT * FROM tbl_portfolio WHERE type = 2";
                                                 $stmt3=$db->prepare($sql3);
                                                 $stmt3->execute();
                                                 while($row3=$stmt3->fetch(PDO::FETCH_ASSOC)){

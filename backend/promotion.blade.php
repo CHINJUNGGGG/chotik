@@ -109,7 +109,7 @@ table.dataTable thead .sorting_desc_disabled:before {
                     ?>
                         <div class="col-lg-4 col-md-6 mt-5">
                             <div class="card card-bordered">
-                                <img class="card-img-top img-fluid" src="img/promotion/<?=$pro_img?>" alt="image">
+                                <img class="card-img-top img-fluid" src="img/promotion/<?=$pro_img?>" alt="image" style="height:300px;">
                                 <div class="card-body">
                                     <h5 class="title"><?=$pro_name?></h5>
                                     <p class="card-text">

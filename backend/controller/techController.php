@@ -21,7 +21,7 @@ if(isset($_POST["do"]) && $_POST["do"] != "" ){
             $result_check = mysqli_query($conn, $sql_check) or die(mysqli_error());
             $num=mysqli_num_rows($result_check);
 
-            $sql_check1 = "SELECT email FROM tbl_admin WHERE email = '".$email."'";
+            $sql_check1 = "SELECT email FROM tbl_users WHERE email = '".$email."'";
             $result_check1 = mysqli_query($conn, $sql_check1) or die(mysqli_error());
             $num1=mysqli_num_rows($result_check1);
 
@@ -54,7 +54,7 @@ if(isset($_POST["do"]) && $_POST["do"] != "" ){
                     VALUES ('$number', '$email', '$tel', '$firstname', '$lastname', '$newname1', '$expert', current_timestamp())";
                     $result = mysqli_query($conn, $sql) or die(mysqli_error());
 
-                    $sql1 = "INSERT INTO `tbl_admin`(`firstname`, `lastname`, `tel`, `email`, `password`, `status`, `create_at`, `update_at`) 
+                    $sql1 = "INSERT INTO `tbl_users`(`firstname`, `lastname`, `tel`, `email`, `password`, `status`, `create_at`, `update_at`) 
                     VALUES ('$firstname', '$lastname', '$tel', '$email', '$password_hash', '1', current_timestamp(), current_timestamp())";
                     $result1 = mysqli_query($conn, $sql1) or die(mysqli_error());
 
@@ -82,7 +82,7 @@ if(isset($_POST["do"]) && $_POST["do"] != "" ){
                             // die();
                     $result = mysqli_query($conn, $sql) or die(mysqli_error());
 
-                    $sql1 = "INSERT INTO `tbl_admin`(`firstname`, `lastname`, `tel`, `email`, `password`, `status`, `create_at`, `update_at`) 
+                    $sql1 = "INSERT INTO `tbl_users`(`firstname`, `lastname`, `tel`, `email`, `password`, `status`, `create_at`, `update_at`) 
                     VALUES ('$firstname', '$lastname', '$tel', '$email', '$password_hash', '1', current_timestamp(), current_timestamp())";
                     $result1 = mysqli_query($conn, $sql1) or die(mysqli_error());
                     
@@ -117,7 +117,18 @@ if(isset($_POST["do"]) && $_POST["do"] != "" ){
         $expert = $_POST['expert'];
         $id = $_POST['id'];
 
-        if($num > 0){
+        $password_hash = password_hash($tel, PASSWORD_BCRYPT);
+
+        // $sql_check = "SELECT email FROM tbl_tech WHERE email = '".$email."'";
+        // $result_check = mysqli_query($conn, $sql_check) or die(mysqli_error());
+        // $num=mysqli_num_rows($result_check);
+
+        // $sql_check1 = "SELECT email FROM tbl_users WHERE email = '".$email."'";
+        // $result_check1 = mysqli_query($conn, $sql_check1) or die(mysqli_error());
+        // $num1=mysqli_num_rows($result_check1);
+
+
+        if($num > 0 || $num1 > 0){
             echo "Error";
         }else{  
 
@@ -131,6 +142,12 @@ if(isset($_POST["do"]) && $_POST["do"] != "" ){
             $sql = "UPDATE tbl_tech SET firstname = '".$firstname."', lastname = '".$lastname."', email = '".$email."', tel = '".$tel."', picture = '".$newname."', expert = '".$expert."', update_at = current_timestamp()
             WHERE id = '".$id."'";
             $result = mysqli_query($conn, $sql) or die(mysqli_error());
+            
+            $sql1 = "UPDATE tbl_users SET firstname = '".$firstname."', lastname = '".$lastname."', password = '".$password_hash."', email = '".$email."', tel = '".$tel."', update_at = current_timestamp()
+            WHERE email = '".$email."'";
+            // echo($sql1);
+            // die();
+            $result1 = mysqli_query($conn, $sql1) or die(mysqli_error());
             
             echo "Success";
         }

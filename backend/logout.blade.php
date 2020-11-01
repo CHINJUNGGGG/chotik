@@ -1,5 +1,5 @@
 <?php
 session_start();
 unset($_SESSION["id"]);
-header("Location:login.blade.php");
+header("Location:../index.blade.php");
 ?>

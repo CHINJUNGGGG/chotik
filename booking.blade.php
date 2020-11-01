@@ -3,7 +3,7 @@ session_start();
 require_once __DIR__.'/db/connectpdo.php';
 $user_id = $_SESSION['id'];
 $data = array();
-$sql = "SELECT id,b_date,b_time,b_end_date,b_list,b_start_time FROM tbl_booking WHERE b_status = '0' AND user_id = '".$user_id."' AND promotion IS NULL";
+$sql = "SELECT id,b_date,b_time,b_end_date,b_list,b_start_time FROM tbl_booking WHERE user_id = '".$user_id."' AND promotion IS NULL";
 $stmt=$db->prepare($sql);
 $stmt->execute();
 while($row=$stmt->fetch(PDO::FETCH_ASSOC)){
@@ -55,40 +55,60 @@ $row1=$stmt1->fetch(PDO::FETCH_ASSOC);
 
     <div class="container" style="margin-top: 140px;">
         <div class="row">
-            <div class="col-8">
+            <div class="col-7">
                 <div id="calendar"></div>
             </div>
-            <div class="col-4">
+            <div class="col-5">
                 <?php
-                    $sql4 = "SELECT b_date FROM tbl_booking WHERE b_status = '0' AND user_id = '".$user_id."' GROUP BY b_date";
+                    $sql4 = "SELECT * FROM tbl_booking WHERE user_id = '".$user_id."' GROUP BY b_date";
                     $stmt4=$db->prepare($sql4);
                     $stmt4->execute();
                     while($row4=$stmt4->fetch(PDO::FETCH_ASSOC)){
-                        $b_date4 = $row4['b_date'];  
+                        $b_date4 = $row4['b_date']; 
+                        $b_status = $row4['b_status'];  
 
-                        function DateThai($b_date4){
-                            $year = date("Y",strtotime($b_date4))+543;
-                            $month= date("n",strtotime($b_date4));
-                            $day= date("j",strtotime($b_date4));
-                            $monthcut = Array("","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤษจิกายน","ธันวาคม");
-                            $monththai=$monthcut[$month];
-                            return "$day $monththai $year";
-                        }  
+                        // function DateThai($b_date4){
+                        //     $year = date("Y",strtotime($b_date4))+543;
+                        //     $month= date("n",strtotime($b_date4));
+                        //     $day= date("j",strtotime($b_date4));
+                        //     $monthcut = Array("","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤษจิกายน","ธันวาคม");
+                        //     $monththai=$monthcut[$month];
+                        //     return "$day $monththai $year";
+                        // }  
                 ?>
                 <div class="card mb-2">
                     <div class="card-header">
-                        <?php echo DateThai($b_date4); ?>
+                        <div class="row">
+                            <div class="col-6 text-left">
+                                <?=$b_date4?>
+                            </div>
+                            <!-- <div class="col-6 text-right">
+                                <?php if($b_status == '0'){ ?>
+                                <p style="color: orange; font-weight: bold; margin-bottom: -20px;">รอการรับจอง</p>
+                                <?php }else if($b_status == '1'){ ?>
+                                <p style="color: green; font-weight: bold; margin-bottom: -20px;">รับจองแล้ว</p>
+                                <?php }else if($b_status == '2'){ ?>
+                                <p style="color: red; font-weight: bold; margin-bottom: -20px;">ยกเลิกการจองโดยระบบ</p>
+                                <?php }else if($b_status == '3'){ ?>
+                                <p style="color: red; font-weight: bold; margin-bottom: -20px;">ยกเลิกการจองของลูกค้า</p>
+                                <?php }else{ ?>
+                                <p style="color: green; font-weight: bold; margin-bottom: -20px;">ทำรายการเสร็จสิ้น</p>
+                                <?php } ?>
+                            </div> -->
+                        </div>
                     </div>
     
                     <div class="card-body">
                 <?php
-                    $sql2 = "SELECT * FROM tbl_booking WHERE b_date = '".$b_date4."' AND b_status = '0' AND user_id = '".$user_id."' AND promotion IS NULL";
+                    $sql2 = "SELECT * FROM tbl_booking WHERE b_date = '".$b_date4."' AND user_id = '".$user_id."' AND promotion IS NULL";
                     $stmt2=$db->prepare($sql2);
                     $stmt2->execute();
                     while($row2=$stmt2->fetch(PDO::FETCH_ASSOC)){
                         $id2 = $row2['id'];
                         $b_list2 = $row2['b_list'];
+                        $b_start_date = $row2['b_start_date'];
                         $b_date2 = $row2['b_date'];
+                        $b_status = $row2['b_status'];
                         $b_end_date2 = $row2['b_end_date'];
                         
                     $sql3 = "SELECT list_name FROM tbl_list WHERE id = :b_list2";
@@ -100,15 +120,44 @@ $row1=$stmt1->fetch(PDO::FETCH_ASSOC);
                     
                 ?>
                         <div class="alert alert-secondary" role="alert">
-                            <?=$list_name3?>
+                            <div class="row">
+                                <div class="col-1 text-left">
+                                    <?php if($b_status == '0'){ ?>
+                                        <a href="controller/cancelController.php?id=<?=$id2?>" onclick="return confirm('คุณต้องการทำรายการนี้ ใช่หรือไม่ ?')"><span class="badge badge-danger">X</span></a>
+                                    <?php } ?>
+                                    <?php if($b_status == '1'){ ?>
+                                        <a href="controller/cancelController.php?id=<?=$id2?>" onclick="return confirm('คุณต้องการทำรายการนี้ ใช่หรือไม่ ?')"><span class="badge badge-danger">X</span></a>
+                                    <?php } ?>   
+                                    <?php if($b_status == '4'){ ?>
+                                        <span class="badge badge-success" style="width: 17px;">/</span>
+                                    <?php } ?>   
+                                </div>
+                                <div class="col-3 text-left">
+                                    <?=$list_name3?>
+                                </div>
+                                <div class="col-8 text-right">
+                                    <?php if($b_status == '0'){ ?>
+                                    <p style="color: orange; font-weight: bold; margin-bottom: -20px;">รอการรับจอง</p>
+                                    <?php }else if($b_status == '1'){ ?>
+                                    <p style="color: green; font-weight: bold; margin-bottom: -20px;">รับจองแล้ว</p>
+                                    <?php }else if($b_status == '2'){ ?>
+                                    <p style="color: red; font-weight: bold; margin-bottom: -20px;">ยกเลิกการจองโดยระบบ</p>
+                                    <?php }else if($b_status == '3'){ ?>
+                                    <p style="color: red; font-weight: bold; margin-bottom: -20px;">ยกเลิกการจองโดยลูกค้า</p>
+                                    <?php }else{ ?>
+                                    <p style="color: green; font-weight: bold; margin-bottom: -20px;">ทำรายการเสร็จสิ้น</p>
+                                    <?php } ?>
+                                </div>
+                            </div>
                         </div>
                 <?php } ?>
                 <?php
-                    $sql5 = "SELECT * FROM tbl_booking WHERE b_date = '".$b_date4."' AND b_status = '0' AND user_id = '".$user_id."' AND b_list IS NULL";
+                    $sql5 = "SELECT * FROM tbl_booking WHERE b_date = '".$b_date4."' AND user_id = '".$user_id."' AND b_list IS NULL ";
                     $stmt5=$db->prepare($sql5);
                     $stmt5->execute();
                     while($row5=$stmt5->fetch(PDO::FETCH_ASSOC)){
                         $promotion = $row5['promotion'];
+                        $id3 = $row5['id'];
                         
                     $sql6 = "SELECT pro_name FROM tbl_promotion WHERE id = :promotion";
                     $stmt6=$db->prepare($sql6);
@@ -119,14 +168,34 @@ $row1=$stmt1->fetch(PDO::FETCH_ASSOC);
                     
                 ?>
                         <div class="alert alert-info" role="alert">
-                            <?=$pro_name?>
+                            <div class="row">
+                                <div class="col-1 text-left">
+                                    <a href="controller/cancelController.php?id=<?=$id3?>"><span class="badge badge-danger">x</span></a>
+                                </div>
+                                <div class="col-3 text-left">
+                                    <?=$pro_name?>
+                                </div>
+                                <div class="col-8 text-right">
+                                    <?php if($b_status == '0'){ ?>
+                                    <p style="color: orange; font-weight: bold; margin-bottom: -20px;">รอการรับจอง</p>
+                                    <?php }else if($b_status == '1'){ ?>
+                                    <p style="color: green; font-weight: bold; margin-bottom: -20px;">รับจองแล้ว</p>
+                                    <?php }else if($b_status == '2'){ ?>
+                                    <p style="color: red; font-weight: bold; margin-bottom: -20px;">ยกเลิกการจองโดยระบบ</p>
+                                    <?php }else if($b_status == '3'){ ?>
+                                    <p style="color: red; font-weight: bold; margin-bottom: -20px;">ยกเลิกการจองของลูกค้า</p>
+                                    <?php }else{ ?>
+                                    <p style="color: green; font-weight: bold; margin-bottom: -20px;">ทำรายการเสร็จสิ้น</p>
+                                    <?php } ?>
+                                </div>
+                            </div>
                         </div>
                 <?php } ?>
                     </div>
                 <?php
 
                     $sql5 = "SELECT SUM(b_price) as sum,SEC_TO_TIME(SUM(time_to_sec(`tbl_booking`.`b_time`))) 
-                    As timeSum FROM tbl_booking WHERE b_date = '".$b_date4."' AND b_status = '0' AND user_id = '".$user_id."'";
+                    As timeSum FROM tbl_booking WHERE b_date = '".$b_date4."' AND user_id = '".$user_id."'";
                     $stmt5=$db->prepare($sql5);
                     $stmt5->execute();
                     while($row5=$stmt5->fetch(PDO::FETCH_ASSOC)){
@@ -154,90 +223,6 @@ $row1=$stmt1->fetch(PDO::FETCH_ASSOC);
                 <?php } ?>    
                 </div>
                 <?php } ?>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">เข้าสู่ระบบ</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="controller/registerController.php" id="login_form" method="POST"
-                    enctype="multipart/form-data">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="username">ชื่อผู้ใช้งาน</label>
-                            <input type="text" class="form-control" name="username" id="username" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">รหัสผ่าน</label>
-                            <input type="password" class="form-control" name="password" id="password" required>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิดหน้าต่าง</button>
-                        <button type="submit" name="submit" id="submit" class="btn btn-primary">เข้าสู่ระบบ</button>
-                        <input type="hidden" name="do" value="login">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="regisModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">สมัครสมาชิก</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="controller/registerController.php" id="register_form" method="POST"
-                    enctype="multipart/form-data">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="prefixname" >คำนำหน้านาม</label>
-                            <select name="prefixname" id="prefixname" class="form-control">
-                                <option>นาย</option>
-                                <option>นาง</option>
-                                <option>นางสาว</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="firstname"  style="margin-top: 10px;">ชื่อ</label>
-                            <input type="text" class="form-control" name="firstname" id="firstname" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="lastname">นามสกุล</label>
-                            <input type="text" class="form-control" name="lastname" id="lastname" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="tel">เบอร์โทรศัพท์</label>
-                            <input type="text" class="form-control" name="tel" id="tel" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="username">ชื่อผู้ใช้งาน</label>
-                            <input type="text" class="form-control" name="username" id="username" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">รหัสผ่าน</label>
-                            <input type="password" class="form-control" name="password" id="password" required>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิดหน้าต่าง</button>
-                        <button type="submit" name="submit" id="submit" class="btn btn-primary">ยืนยัน</button>
-                        <input type="hidden" name="do" value="register">
-                    </div>
-                </form>
             </div>
         </div>
     </div>
@@ -297,36 +282,52 @@ $row1=$stmt1->fetch(PDO::FETCH_ASSOC);
     });
     </script>
     <script type="text/javascript">
-    $(document).ready(function(e) {
-        $("#login_form").on('submit', (function(e) {
-            e.preventDefault();
-            $.ajax({
-                url: "controller/registerController.php",
-                type: "POST",
-                data: new FormData(this),
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function(response) {
-                    console.log(response)
-                    if (response == "Error") {
-                        swal("ชื่อผู้ใช้งานหรือรหัสผ่านผิด !!", {
-                            icon: "warning",
-                        });
-                    }
-                    if (response == "Success") {
-                        swal("Success", {
-                            icon: "success",
-                        });
-                        setTimeout(function() {
-                            window.location.href = "index.blade.php";
-                        }, 3000);
-                    }
-                },
-                error: function() {}
-            });
-        }));
-    });
+     $(document).ready(function(e) {
+            $("#login_form").on('submit', (function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "backend/controller/loginController.php",
+                    type: "POST",
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(response) {
+                        console.log(response)
+                        if (response == "Error") {
+                            swal("ชื่อผู้ใช้งานหรือรหัสผ่านผิด !!", {
+                                icon: "warning",
+                            });
+                        }
+                        if (response == "users") {
+                            swal("Success", {
+                                icon: "success",
+                            });
+                            setTimeout(function() {
+                                window.location.href = "index.blade.php";
+                            }, 1500);
+                        }
+                        if (response == "admin") {
+                            swal("Success", {
+                                icon: "success",
+                            });
+                            setTimeout(function() {
+                                window.location.href = "backend/index.blade.php";
+                            }, 1500);
+                        }
+                        if (response == "staff") {
+                            swal("Success", {
+                                icon: "success",
+                            });
+                            setTimeout(function() {
+                                window.location.href = "backend/index.blade.php";
+                            }, 1500);
+                        }
+                    },
+                    error: function() {}
+                });
+            }));
+        });
     </script>
     
 </body>

@@ -102,7 +102,7 @@ table.dataTable thead .sorting_desc_disabled:before {
                                         <thead class="text-capitalize" style="background-color: #000;">
                                             <tr>
                                                 <th>#</th>
-                                                <th>ชื่อผู้ใช้งาน</th>
+                                                <th>อีเมล์</th>
                                                 <th>ชื่อ-นามสกุล</th>
                                                 <th>เบอร์โทรศัพท์</th>
                                                 <th>วัน-เวลาการสมัครสมาชิก</th>
@@ -112,12 +112,12 @@ table.dataTable thead .sorting_desc_disabled:before {
                                         <tbody>
                                             <?php
                                                 $i=0;
-                                                $sql = "SELECT * FROM tbl_users";
+                                                $sql = "SELECT * FROM tbl_users WHERE status = 2";
                                                 $stmt=$db->prepare($sql);
                                                 $stmt->execute();
                                                 while($row=$stmt->fetch(PDO::FETCH_ASSOC)){
                                                     $id = $row['id'];
-                                                    $username = $row['username'];
+                                                    $email = $row['email'];
                                                     $tel = $row['tel'];
                                                     $prefixname = $row['prefixname'];
                                                     $firstname = $row['firstname'];
@@ -127,7 +127,7 @@ table.dataTable thead .sorting_desc_disabled:before {
                                                 ?>
                                             <tr>
                                                 <td><?=$i?></td>
-                                                <td><?=$username?></td>
+                                                <td><?=$email?></td>
                                                 <td><?=$prefixname?> <?=$firstname?> <?=$lastname?></td>
                                                 <td><?=$tel?></td>
                                                 <td><?=$create_at?></td>
@@ -177,8 +177,8 @@ table.dataTable thead .sorting_desc_disabled:before {
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-6">
-                                    <label for="exampleInputEmail1">ชื่อผู้ใช้งาน</label>
-                                    <input type="email" class="form-control" id="username" name="username" readonly>
+                                    <label for="email">อีเมล์</label>
+                                    <input type="email" class="form-control" id="email" name="email" readonly>
                                 </div>
                                 <div class="form-group col-6">
                                     <label for="exampleInputEmail1">เบอร์โทรศัพท์</label>
@@ -214,7 +214,7 @@ table.dataTable thead .sorting_desc_disabled:before {
                     dataType: "json",
                     success: function(response) {
                         console.log(response)
-                        var arr_input_key = ['tel', 'firstname', 'lastname', 'prefixname', 'username']
+                        var arr_input_key = ['tel', 'firstname', 'lastname', 'prefixname', 'email']
                         $.each(response, function(indexInArray, valueOfElement) {
                             if (jQuery.inArray(indexInArray, arr_input_key) !== -
                                 1) {
