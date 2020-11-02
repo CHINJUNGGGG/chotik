@@ -207,7 +207,7 @@ table.dataTable thead .sorting_desc_disabled:before {
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form id="add_form" method="POST" enctype="multipart/form-data">
+                    <form id="edit_form" method="POST" enctype="multipart/form-data">
                         <div class="modal-body">
                             <div class="form-row">
                                 <div class="form-group col-12">
@@ -220,11 +220,7 @@ table.dataTable thead .sorting_desc_disabled:before {
                                 </div>
                                 <div class="form-group col-12">
                                     <label for="lastname">อีเมล</label>
-                                    <input type="email" class="form-control" name="email" id="email" required>
-                                </div>
-                                <div class="form-group col-12">
-                                    <label for="password">รหัสผ่าน</label>
-                                    <input type="password" class="form-control" name="password" id="password" required>
+                                    <input type="email" class="form-control" name="email" id="email" readonly>
                                 </div>
                                 <div class="form-group col-12">
                                     <label for="tel">เบอร์โทรศัพท์</label>
@@ -232,10 +228,11 @@ table.dataTable thead .sorting_desc_disabled:before {
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="modal-footer">
+                        <div class="modal-footer">
                             <button type="submit" class="btn btn-secondary">Submit</button>
-                            <input type="hidden" name="do" value="add">
-                        </div> -->
+                            <input type="hidden" name="do" value="edit">
+                            <input type="hidden" name="id" id="id">
+                        </div>
                     </form>
                 </div>
             </div>
@@ -265,7 +262,7 @@ table.dataTable thead .sorting_desc_disabled:before {
                     dataType: "json",
                     success: function(response) {
                         console.log(response)
-                        var arr_input_key = ['tel', 'firstname', 'lastname', 'email', 'password']
+                        var arr_input_key = ['tel', 'firstname', 'lastname', 'email', 'password', 'id']
                         $.each(response, function(indexInArray, valueOfElement) {
                             if (jQuery.inArray(indexInArray, arr_input_key) !== -
                                 1) {
@@ -284,6 +281,36 @@ table.dataTable thead .sorting_desc_disabled:before {
         <script>
             $(document).ready(function(e) {
                 $("#add_form").on('submit', (function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: "controller/adminController.php",
+                        type: "POST",
+                        data: new FormData(this),
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success: function(response) {
+                            console.log(response)
+                            if (response == "Error") {
+                                swal("Please complete all information.", {
+                                    icon: "warning",
+                                });
+                            }
+                            if (response == "Success") {
+                                swal("Add successfully.", {
+                                    icon: "success",
+                                });
+                                setTimeout(function() {
+                                    window.location.href = "admin.blade.php";
+                                }, 2000);
+                            }
+                        },
+                        error: function() {}
+                    });
+                }));
+            });
+            $(document).ready(function(e) {
+                $("#edit_form").on('submit', (function(e) {
                     e.preventDefault();
                     $.ajax({
                         url: "controller/adminController.php",

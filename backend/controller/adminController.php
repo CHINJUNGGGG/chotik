@@ -37,6 +37,28 @@ if(isset($_POST["do"]) && $_POST["do"] != "" ){
 
         break;
 
+        case 'edit':
+
+            $firstname = $_POST['firstname'];
+            $lastname = $_POST['lastname'];
+            $tel = $_POST['tel'];
+            $email = $_POST['email'];
+            $id = $_POST['id'];
+    
+            $sql = "UPDATE tbl_users SET firstname = '".$firstname."', lastname = '".$lastname."', tel = '".$tel."', status = '0' 
+            WHERE email = '".$email."'";
+            $result = mysqli_query($conn, $sql) or die(mysqli_error());
+
+            $sql1 = "UPDATE tbl_admin SET firstname = '".$firstname."', lastname = '".$lastname."', email = '".$email."', tel = '".$tel."', status = '0' 
+            WHERE id = '".$id."'";
+            $result1 = mysqli_query($conn, $sql1) or die(mysqli_error());
+            
+            echo "Success";
+
+            
+
+        break;
+
         case 'view_user';
 
         include('../db/connectpdo.php'); 
