@@ -116,12 +116,14 @@ require_once __DIR__.'/db/connectpdo.php';
 
     <?php require_once __DIR__.'/resource/script.php'; ?>
     <script>
-        $(document).ready(function(){
-            $('ul li a').click(function(){
-                $('li a').removeClass("active");
-                $(this).addClass("active");
-            });
-        });
+    $(document).ready(function() {
+        var url = window.location; 
+        var element = $('ul.sidebar-menu a').filter(function() {
+        return this.href == url || url.href.indexOf(this.href) == 0; }).parent().addClass('active');
+        if (element.is('li')) { 
+             element.addClass('active').parent().parent('li').addClass('active')
+         }
+    });
     </script>
     <script type="text/javascript">
         $(document).ready(function(e) {
