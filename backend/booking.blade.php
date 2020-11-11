@@ -94,7 +94,43 @@ table.dataTable thead .sorting_desc_disabled:before {
                     <div class="col-12 mt-5">
                         <div class="card">
                             <div class="card-header" style="border-bottom: 1px solid rgb(247 247 247) !important;">
-                                <h5>Data Booking</h5>
+                                <div class="row">
+                                    <div class="col-8">
+                                        <h5>Data Booking</h5>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <form id="trade_money" method="post" enctype="multipart/form-data">
+                                            <div class="form-group">
+                                                <select name="tech_id" id="tech_id" class="form-control form-control-lg">
+                                                    <option>เลือกช่าง</option>
+                                                    <?php 
+                                                    $sql6 = "SELECT * FROM tbl_booking WHERE b_status = 1 GROUP BY tech_id";
+                                                    $stmt6=$db->prepare($sql6);
+                                                    $stmt6->execute();
+                                                    while($row6=$stmt6->fetch(PDO::FETCH_ASSOC)){
+                                                        $id6 = $row6['id'];
+                                                        $tech_id6 = $row6['tech_id'];
+
+                                                    $sql7 = "SELECT * FROM tbl_tech WHERE id = '".$tech_id6."'";
+                                                    $stmt7=$db->prepare($sql7);
+                                                    $stmt7->execute();
+                                                    while($row7=$stmt7->fetch(PDO::FETCH_ASSOC)){
+                                                        $id7 = $row7['id'];
+                                                        $firstname = $row7['firstname'];
+                                                        $lastname = $row7['lastname'];
+                                                      
+                                                    ?>
+                                                     <option value="<?=$id7?>"><?=$firstname?> <?=$lastname?></option>
+                                                    <?php }}?>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-primary">แบ่งเงิน</button>
+                                                <input type="hidden" name="do" value="trade">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                             <div class="card-body">
                                 <div class="data-tables datatable-primary">
@@ -184,7 +220,7 @@ table.dataTable thead .sorting_desc_disabled:before {
                                                               <a href="controller/cancelController.php?id='.$id.'"><button type="button" class="btn btn-sm btn-danger" onclick="return confirm("คุณต้องการทำรายการนี้ ใช่หรือไม่ ?")">ไม่รับจอง</button></a>';
                                                     }else if($b_status == '1'){
                                                         echo '<a href="controller/salaryController.php?id='.$id.'"><button type="button" class="btn btn-sm btn-info" onclick="return confirm("คุณต้องการทำรายการนี้ ใช่หรือไม่ ?")">แบ่งเงิน</button></a>
-                                                              <a href="controller/cancelController.php?id='.$id.'"><button type="button" class="btn btn-sm btn-danger" onclick="return confirm("คุณต้องการทำรายการนี้ ใช่หรือไม่ ?")">ยกเลิกการจอง</button></a>';
+                                                              <a href="controller/rateController.php?id='.$id.'"><button type="button" class="btn btn-sm btn-danger" onclick="return confirm("คุณต้องการทำรายการนี้ ใช่หรือไม่ ?")">ยกเลิกการจอง</button></a>';
                                                     }else{
                                                         echo " ";
                                                     }
@@ -209,7 +245,7 @@ table.dataTable thead .sorting_desc_disabled:before {
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
         </script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script src="assets/js/ddtf.js"></script>
         <script>
             jQuery('#dataTable2').ddTableFilter();
@@ -220,6 +256,37 @@ table.dataTable thead .sorting_desc_disabled:before {
                 e.preventDefault();
                 $.ajax({
                     url: "controller/bookingController.php",
+                    type: "POST",
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(response) {
+                        console.log(response)
+                        if (response == "Error") {
+                            swal("", {
+                                icon: "warning",
+                            });
+                        }
+                        if (response == "Success") {
+                            swal("Success", {
+                                icon: "success",
+                            });
+                            setTimeout(function() {
+                                window.location.href = "booking.blade.php";
+                            }, 3000);
+                        }
+                    },
+                    error: function() {}
+                });
+            }));
+        });
+
+        $(document).ready(function(e) {
+            $("#trade_money").on('submit', (function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "controller/tradeController.php",
                     type: "POST",
                     data: new FormData(this),
                     contentType: false,
