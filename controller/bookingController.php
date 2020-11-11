@@ -25,9 +25,7 @@ if(isset($_POST["do"]) && $_POST["do"] != "" ){
             $stmt_date->execute();
             $row_date=$stmt_date->fetch(PDO::FETCH_ASSOC);
                 $b_status = $row_date['b_status'];
-                $time_check = $row_date['b_start_time'] ??= '0';
-                $date_check = $row_date['b_date'] ??= '0';
-                $technician_id = $row_date['tech_id'] ??= '0';
+
 
                 if($tech_id == '0'){
                     echo "tech";
@@ -86,9 +84,7 @@ if(isset($_POST["do"]) && $_POST["do"] != "" ){
             $stmt_date=$db->prepare($sql_date);
             $stmt_date->execute();
             $row_date=$stmt_date->fetch(PDO::FETCH_ASSOC);
-            $time_check = $row_date['b_start_time'] ??= '0';
-            $date_check = $row_date['b_date'] ??= '0';
-            $technician_id = $row_date['id'] ??= '0';
+
 
             if($b_start_time == $time_check && $b_date == $date_check || $tech_id == $technician_id){
                 echo "Time_out";

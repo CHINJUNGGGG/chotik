@@ -171,7 +171,10 @@ table.dataTable thead .sorting_desc_disabled:before {
                                                     }else if($b_status == '1'){ echo '<font style="color: green; font-weight: bold;">รับจองแล้ว</font>'; 
                                                     }else if($b_status == '2'){ echo '<font style="color: red; font-weight: bold;">ยกเลิกการจองโดยระบบ</font>'; 
                                                     }else if($b_status == '3'){ echo '<font style="color: red; font-weight: bold;">ยกเลิกการโดยลูกค้า</font>'; 
-                                                    }else{ echo '<font style="color: blue; font-weight: bold;">แบ่งเงินสำเร็จ</font>'; }
+                                                    }else if($b_status == '4'){ echo '<font style="color: blue; font-weight: bold;">แบ่งเงินสำเร็จ</font>'; 
+                                                    }else{
+                                                        echo '<font style="color: red; font-weight: bold;">เกินเวลานัด 15 นาที</font>';
+                                                    }
                                                 ?>
                                                 </td>
                                                 <td>
@@ -180,7 +183,8 @@ table.dataTable thead .sorting_desc_disabled:before {
                                                         echo '<a href="controller/bookingController.php?id='.$id.'"><button type="button" class="btn btn-sm btn-success" onclick="return confirm("คุณต้องการอนุมัติรายการนี้ ใช่หรือไม่ ?")">รับจอง</button></a> 
                                                               <a href="controller/cancelController.php?id='.$id.'"><button type="button" class="btn btn-sm btn-danger" onclick="return confirm("คุณต้องการทำรายการนี้ ใช่หรือไม่ ?")">ไม่รับจอง</button></a>';
                                                     }else if($b_status == '1'){
-                                                        echo '<a href="controller/salaryController.php?id='.$id.'"><button type="button" class="btn btn-sm btn-info" onclick="return confirm("คุณต้องการทำรายการนี้ ใช่หรือไม่ ?")">แบ่งเงิน</button></a> ';
+                                                        echo '<a href="controller/salaryController.php?id='.$id.'"><button type="button" class="btn btn-sm btn-info" onclick="return confirm("คุณต้องการทำรายการนี้ ใช่หรือไม่ ?")">แบ่งเงิน</button></a>
+                                                              <a href="controller/cancelController.php?id='.$id.'"><button type="button" class="btn btn-sm btn-danger" onclick="return confirm("คุณต้องการทำรายการนี้ ใช่หรือไม่ ?")">ยกเลิกการจอง</button></a>';
                                                     }else{
                                                         echo " ";
                                                     }
@@ -206,6 +210,10 @@ table.dataTable thead .sorting_desc_disabled:before {
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
         </script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script src="assets/js/ddtf.js"></script>
+        <script>
+            jQuery('#dataTable2').ddTableFilter();
+            </script>
         <script>
         $(document).ready(function(e) {
             $("#success").on('submit', (function(e) {

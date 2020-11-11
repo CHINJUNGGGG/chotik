@@ -1,7 +1,7 @@
 <?php
-$dsn = 'mysql:host=localhost;dbname=chotik';
+$dsn = 'mysql:host=multiinnovation_db_1;dbname=chotik';
 $username = 'root';
-$password = '';
+$password = 'root';
 $options = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES UTF8');
 try {
     $db = new PDO($dsn, $username, $password, $options);
